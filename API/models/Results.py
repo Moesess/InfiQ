@@ -3,7 +3,7 @@ import uuid
 from django.db import models
 from django.contrib.auth.models import User
 
-from API.models import Quiz
+from API.models import Test
 
 
 class Result(models.Model):
@@ -19,7 +19,7 @@ class Result(models.Model):
 
     r_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     r_user = models.ForeignKey(User, on_delete=models.CASCADE)
-    r_quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    r_quiz = models.ForeignKey(Test, on_delete=models.CASCADE)
     t_date_start = models.DateTimeField(auto_now_add=True)
     t_date_end = models.DateTimeField(null=True)
     t_score = models.IntegerField()

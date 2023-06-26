@@ -7,7 +7,7 @@ from API.models import Exam, Question
 
 class Test(models.Model):
     """
-        Quiz model, contains:
+        Test model, contains:
         uid - unique id,
         exam - type of exam that tests is made of,
         questions - m2m field that contains all the questions
