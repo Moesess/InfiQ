@@ -3,7 +3,7 @@ import uuid
 from django.db import models
 from django.contrib.auth.models import User
 
-from API.models import Test
+from .test import Test
 
 
 class TestResult(models.Model):
@@ -23,6 +23,11 @@ class TestResult(models.Model):
     tr_date_start = models.DateTimeField(auto_now_add=True)
     tr_date_end = models.DateTimeField(null=True)
     tr_score = models.IntegerField()
+
+    class Meta:
+        ordering = ["tr_uid"]
+        get_latest_by = ["tr_uid"]
+        verbose_name = "TestResult"
 
     @property
     def duration(self):

@@ -16,8 +16,8 @@ class TestType(models.Model):
     tt_text = models.TextField()
 
     class Meta:
-        ordering = ["uid"]
-        get_latest_by = ["uid"]
+        ordering = ["tt_uid"]
+        get_latest_by = ["tt_uid"]
         verbose_name = "ExamType"
 
     def __str__(self):

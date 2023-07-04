@@ -1,7 +1,7 @@
 import uuid
 
 from django.db import models
-from API.models import TestType
+from .testType import TestType
 
 
 class Question(models.Model):
@@ -17,8 +17,8 @@ class Question(models.Model):
     q_text = models.TextField()
 
     class Meta:
-        ordering = ["uid"]
-        get_latest_by = ["uid"]
+        ordering = ["q_uid"]
+        get_latest_by = ["q_uid"]
         verbose_name = "Question"
 
     def __str__(self):

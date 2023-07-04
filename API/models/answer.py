@@ -2,7 +2,7 @@ import uuid
 
 from django.db import models
 
-from API.models import Question
+from .question import Question
 
 
 class Answer(models.Model):
@@ -20,8 +20,8 @@ class Answer(models.Model):
     a_correct = models.BooleanField()
 
     class Meta:
-        ordering = ["uid"]
-        get_latest_by = ["uid"]
+        ordering = ["a_uid"]
+        get_latest_by = ["a_uid"]
         verbose_name = "Answer"
 
     def __str__(self):
