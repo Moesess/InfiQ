@@ -14,9 +14,9 @@ class Test(models.Model):
         questions - m2m field that contains all the questions
     """
 
-    t_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
-    t_testType = models.ForeignKey(TestType, on_delete=models.CASCADE)
-    t_questions = models.ManyToManyField(Question)
+    t_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True, verbose_name="UID")
+    t_testType = models.ForeignKey(TestType, on_delete=models.CASCADE, verbose_name="Test type")
+    t_questions = models.ManyToManyField(Question, verbose_name="Questions")
 
     class Meta:
         ordering = ["t_uid"]

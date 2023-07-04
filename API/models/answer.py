@@ -14,10 +14,10 @@ class Answer(models.Model):
         correct - Bool, if answer is correct
     """
 
-    a_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
-    a_text = models.TextField()
-    a_question = models.ForeignKey(Question, related_name='answers', on_delete=models.CASCADE)
-    a_correct = models.BooleanField()
+    a_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True, verbose_name="UID")
+    a_text = models.TextField(verbose_name="Text")
+    a_question = models.ForeignKey(Question, related_name='answers', on_delete=models.CASCADE, verbose_name="Question")
+    a_correct = models.BooleanField(verbose_name="Is correct?")
 
     class Meta:
         ordering = ["a_uid"]

@@ -11,18 +11,18 @@ class TestResult(models.Model):
         Results model, contains:
         uid - unique id,
         user - user that did the test and got result,
-        quiz - quiz object had all the questions,
+        test - test object had all the questions,
         date_start - starting datetime for test,
         date_end - ending datetime for test,
         score - final score that will be defined TODO
     """
 
-    tr_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
-    tr_user = models.ForeignKey(User, on_delete=models.CASCADE)
-    tr_test = models.ForeignKey(Test, on_delete=models.CASCADE)
-    tr_date_start = models.DateTimeField(auto_now_add=True)
-    tr_date_end = models.DateTimeField(null=True)
-    tr_score = models.IntegerField()
+    tr_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True, verbose_name="UID")
+    tr_user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="User")
+    tr_test = models.ForeignKey(Test, on_delete=models.CASCADE, verbose_name="Test")
+    tr_date_start = models.DateTimeField(auto_now_add=True, verbose_name="Start date")
+    tr_date_end = models.DateTimeField(null=True, verbose_name="End date")
+    tr_score = models.IntegerField(verbose_name="Score")
 
     class Meta:
         ordering = ["tr_uid"]

@@ -12,9 +12,9 @@ class Question(models.Model):
         text - description of a question, text field
     """
 
-    q_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
-    q_testType = models.ForeignKey(TestType, on_delete=models.CASCADE)
-    q_text = models.TextField()
+    q_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True, verbose_name="UID")
+    q_testType = models.ForeignKey(TestType, on_delete=models.CASCADE, verbose_name="Test type")
+    q_text = models.TextField(verbose_name="Text")
 
     class Meta:
         ordering = ["q_uid"]
