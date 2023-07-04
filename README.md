@@ -1,22 +1,22 @@
 # InfiQ_API
 
 ## Instalacja środowiska
-Zakładam, że znajdujemy się pod następującą ścieżką (Dysk nie ma znaczenia):
+Zakładam, że znajdujemy się pod następującą ścieżką Nie ma znaczenia, ale ułatwi potem:
 ```shell
-> cd C:\_PRJ
+C:\ > cd C:\_PRJ
 ```
 W niej klonujemy sobie nasze repo. Nie wchodzimy do środka na razie.
 Tworzymy virtualenv i aktywujemy go. Powinien przed znakiem zachęty pojawić się (InfiQVenv)
 ```shell
-> python -m venv InfiQVenv
-> InfiQVenv\Scripts\activate
+C:\_PRJ> python -m venv InfiQVenv
+C:\_PRJ> InfiQVenv\Scripts\activate
 ```
 
 Teraz możemy wejść do projektu.
 I instalujemy zależności w pliku requirements.txt
 ```shell
-(InfiQ_Venv) cd InfiQ_API
-(InfiQ_Venv) pip install -r requirements.txt
+(InfiQ_Venv) C:\_PRJ> cd InfiQ_API
+(InfiQ_Venv) C:\_PRJ\InfiQ_API> pip install -r requirements.txt
 ```
 
 ## Instalacja Postgres
@@ -27,11 +27,11 @@ Przy instalacji wszystko raczej defaultowo zostawiamy. Hasło postgres ustawiamy
 
 Po instalacji uruchamiamy skrypt, WAŻNE BY BYĆ W AKTYWNYM VENVIE.
 ```shell
-(InfiQ_Venv) dbsetup.bat
+(InfiQ_Venv) C:\_PRJ\InfiQ_API> dbsetup.bat
 ```
 
 Jeśli coś się popsuło z bazą lokalną. Możemy ją zresetować za pomocą. Należy potem tez uruchomić ponownie setup.
 ```shell
-(InfiQ_Venv) dbreset.bat
-(InfiQ_Venv) dbsetup.bat
+(InfiQ_Venv) C:\_PRJ\InfiQ_API> dbreset.bat
+(InfiQ_Venv) C:\_PRJ\InfiQ_API> dbsetup.bat
 ```
