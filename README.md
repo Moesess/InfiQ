@@ -25,7 +25,10 @@ Pobieramy wersję 15.3:
 
 Przy instalacji wszystko raczej defaultowo zostawiamy. Hasło postgres ustawiamy na "admin".
 
-Po instalacji uruchamiamy skrypt, WAŻNE BY BYĆ W AKTYWNYM VENVIE.
+Musimy dodać go do zmiennych środowiskowych. Musimy wskazać w PATH jego folder bin. Np:
+> C:\Program Files\PostgreSQL\15\bin
+
+Po instalacji uruchamiamy skrypt. WAŻNE, BY BYĆ W AKTYWNYM VENV.
 ```shell
 (InfiQ_Venv) C:\_PRJ\InfiQ_API> dbsetup.bat
 ```
