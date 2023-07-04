@@ -21,7 +21,14 @@ from django.conf.urls.static import static
 
 from rest_framework.routers import DefaultRouter
 
+from API import views
+
 router = DefaultRouter()
+router.register(r'Answers', views.AnswerView)
+router.register(r'Questions', views.QuestionView)
+router.register(r'Tests', views.TestView)
+router.register(r'TestResults', views.TestResultView)
+router.register(r'TestTypes', views.TestTypeView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
