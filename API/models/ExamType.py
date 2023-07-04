@@ -3,7 +3,7 @@ import uuid
 from django.db import models
 
 
-class Exam(models.Model):
+class ExamType(models.Model):
     """
         Type of Exam model, contains:
         uid - unique id,
@@ -18,7 +18,7 @@ class Exam(models.Model):
     class Meta:
         ordering = ["uid"]
         get_latest_by = ["uid"]
-        verbose_name = "Exam"
+        verbose_name = "ExamType"
 
     def __str__(self):
         return self.e_name
