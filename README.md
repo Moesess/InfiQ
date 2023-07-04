@@ -1,7 +1,7 @@
 # InfiQ_API
 
 ## Uruchomienie
-Zakładam, że znajdujemy się pod następującą ścieżką:
+Zakładam, że znajdujemy się pod następującą ścieżką (Dysk nie ma znaczenia):
 ```shell
 cd C:\_PRJ
 ```
