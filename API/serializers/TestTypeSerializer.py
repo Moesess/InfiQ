@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from API.models import ExamType
+from API.models import TestType
 
 
 class ExamTypeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ExamType
-        fields = ['e_uid', 'e_name', 'e_text']
+        model = TestType
+        fields = ['tt_uid', 'tt_name', 'tt_text']

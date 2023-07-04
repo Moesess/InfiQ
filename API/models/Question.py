@@ -1,7 +1,7 @@
 import uuid
 
 from django.db import models
-from API.models import ExamType
+from API.models import TestType
 
 
 class Question(models.Model):
@@ -13,7 +13,7 @@ class Question(models.Model):
     """
 
     q_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
-    q_exam = models.ForeignKey(ExamType, on_delete=models.CASCADE)
+    q_testType = models.ForeignKey(TestType, on_delete=models.CASCADE)
     q_text = models.TextField()
 
     class Meta:
@@ -22,4 +22,4 @@ class Question(models.Model):
         verbose_name = "Question"
 
     def __str__(self):
-        return self
+        return self.q_text

@@ -2,7 +2,7 @@ import uuid
 
 from django.db import models
 
-from API.models import ExamType, Question
+from API.models import TestType, Question
 
 
 class Test(models.Model):
@@ -14,8 +14,8 @@ class Test(models.Model):
     """
 
     t_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
-    t_exam = models.ForeignKey(ExamType, on_delete=models.CASCADE)
+    t_testType = models.ForeignKey(TestType, on_delete=models.CASCADE)
     t_questions = models.ManyToManyField(Question)
 
     def __str__(self):
-        return self.t_uid
+        return str(self.t_uid)

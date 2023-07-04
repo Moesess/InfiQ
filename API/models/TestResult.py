@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from API.models import Test
 
 
-class Result(models.Model):
+class TestResult(models.Model):
     """
         Results model, contains:
         uid - unique id,
@@ -17,12 +17,18 @@ class Result(models.Model):
         score - final score that will be defined TODO
     """
 
-    r_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
-    r_user = models.ForeignKey(User, on_delete=models.CASCADE)
-    r_quiz = models.ForeignKey(Test, on_delete=models.CASCADE)
-    t_date_start = models.DateTimeField(auto_now_add=True)
-    t_date_end = models.DateTimeField(null=True)
-    t_score = models.IntegerField()
+    tr_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
+    tr_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    tr_test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    tr_date_start = models.DateTimeField(auto_now_add=True)
+    tr_date_end = models.DateTimeField(null=True)
+    tr_score = models.IntegerField()
+
+    @property
+    def duration(self):
+        if self.tr_date_end:
+            return self.tr_date_end - self.tr_date_start
+        return None
 
     def __str__(self):
-        return f"{self.r_user.username}: {self.r_quiz.name} - {self.t_score}"
+        return f"{self.tr_user.username}: {self.tr_test.name} - {self.tr_score}"

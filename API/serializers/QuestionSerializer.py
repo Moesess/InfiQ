@@ -5,4 +5,4 @@ from API.models import Question
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        fields = ['q_uid', 'q_exam', 'q_text']
+        fields = ['q_uid', 'q_testType', 'q_text']

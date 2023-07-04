@@ -5,5 +5,5 @@ from API.models import TestResult
 class TestResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = TestResult
-        fields = ['r_uid', 'r_user', 'r_quiz', 't_date_start', 't_date_end', 't_score']
+        fields = ['tr_uid', 'tr_user', 'tr_quiz', 'tr_date_start', 'tr_date_end', 'tr_score']
 

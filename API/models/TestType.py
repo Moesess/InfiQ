@@ -3,7 +3,7 @@ import uuid
 from django.db import models
 
 
-class ExamType(models.Model):
+class TestType(models.Model):
     """
         Type of Exam model, contains:
         uid - unique id,
@@ -11,9 +11,9 @@ class ExamType(models.Model):
         text - description of an exam
     """
 
-    e_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
-    e_name = models.CharField(max_length=20,)
-    e_text = models.TextField()
+    tt_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
+    tt_name = models.CharField(max_length=20, )
+    tt_text = models.TextField()
 
     class Meta:
         ordering = ["uid"]
@@ -21,4 +21,4 @@ class ExamType(models.Model):
         verbose_name = "ExamType"
 
     def __str__(self):
-        return self.e_name
+        return self.tt_name
