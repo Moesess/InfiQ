@@ -3,33 +3,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from API.models import Question, Answer, Test, TestResult
-from API.serializers import QuestionSerializer, AnswerSerializer, TestSerializer, TestResultSerializer
-
-
-class StartQuestionView(APIView):
-    def get(self, request):
-        question = Question.objects.order_by('?').first()
-        serializer = QuestionSerializer(question)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-class SubmitAnswerView(APIView):
-    def post(self, request):
-        question_uid: str = request.data.get('question_uid')
-        submitted_answer_text: str = request.data.get('answer')
-
-        question: Question = Question.objects.get(q_uid=question_uid)
-
-        # Check if answer is correct
-        is_correct: bool = Answer.objects.filter(
-            a_question=question, a_text=submitted_answer_text, a_correct=True).exists()
-
-        # Find correct answer and serialize it
-        correct_answer: AnswerSerializer = AnswerSerializer(
-            Answer.objects.filter(a_question=question, a_correct=True).first())
-
-        return Response({'is_correct': is_correct, 'correct_answer': correct_answer.data}, status=status.HTTP_200_OK)
+from API.models import Question, Test, TestResult
+from API.serializers import TestSerializer, TestResultSerializer
 
 
 class StartTestView(APIView):

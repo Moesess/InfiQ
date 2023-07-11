@@ -41,19 +41,19 @@ class Command(BaseCommand):
                 question_title = question_div.find('div', class_='title').text.strip().split('. ', 1)[1].capitalize()
 
                 question = Question.objects.create(q_testType=test_type, q_text=question_title)
-                self.stdout.write(self.style.SUCCESS("Added question " + question.q_text))
+                self.stdout.write(self.style.SUCCESS(f"Added question {question.q_id}"))
                 answer_divs = question_div.find_all('div', class_='answer')
 
                 for answer_div in answer_divs:
-                    answer_text = answer_div.text.strip()[2:]
+                    answer_text = answer_div.text.strip()[3:]
 
                     if 'correct' in answer_div['class']:
                         correct = True
                     else:
                         correct = False
 
-                    Answer.objects.create(a_question=question, a_text=answer_text, a_correct=correct)
-                    self.stdout.write(self.style.SUCCESS("Added answer " + answer_text))
+                    answer = Answer.objects.create(a_question=question, a_text=answer_text, a_correct=correct)
+                    self.stdout.write(self.style.SUCCESS(f"Added answer {answer.a_uid}"))
 
                 image_div = question_div.find('div', class_='image')
                 if image_div:

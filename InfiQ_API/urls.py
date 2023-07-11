@@ -5,7 +5,6 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from API import views
-from API.views import StartQuestionView, SubmitAnswerView
 
 router = DefaultRouter()
 router.register(r'Answers', views.AnswerView)
@@ -16,8 +15,6 @@ router.register(r'TestTypes', views.TestTypeView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('start-question/', StartQuestionView.as_view(), name='start-question'),
-    path('submit-answer/', SubmitAnswerView.as_view(), name='submit-answer'),
     path('', include(router.urls)),
 ]
 
