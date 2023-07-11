@@ -1,7 +1,8 @@
 import uuid
-from datetime import datetime
 
 from django.db import models
+from django.utils import timezone
+
 from .testType import TestType
 
 
@@ -17,7 +18,7 @@ class Question(models.Model):
     q_testType = models.ForeignKey(TestType, on_delete=models.CASCADE, verbose_name="Test type")
     q_text = models.TextField(verbose_name="Text")
     q_img = models.ImageField(blank=True, null=True)
-    q_created_at = models.DateTimeField(default=datetime.now)
+    q_created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
         ordering = ["q_uid"]
