@@ -2,9 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from django.core.management.base import BaseCommand
-from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
-from django.core.files import File
 
 from API.models import TestType, Question, Answer
 
@@ -22,6 +20,7 @@ class Command(BaseCommand):
 
     def scrape_questions(self, url):
         response = requests.get(url)
+        # TODO: TRZEBA TO PRZEKAZAĆ JAKO PARAMETR, ALBO ZROBIĆ SŁOWNIK TYCH EGZAMINÓW
         test_type = TestType.objects.create(tt_name='Test', tt_text='Test Exam')
 
         if response.status_code == 200:
