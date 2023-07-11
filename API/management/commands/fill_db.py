@@ -1,8 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-
-from django.core.management.base import BaseCommand
 from django.core.files.base import ContentFile
+from django.core.management.base import BaseCommand
 
 from API.models import TestType, Question, Answer, TEST_TYPES
 

@@ -3,8 +3,8 @@ import uuid
 from django.db import models
 from django.utils import timezone
 
-from .testType import TestType
 from .question import Question
+from .testType import TestType
 
 
 class Test(models.Model):
