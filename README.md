@@ -10,3 +10,8 @@ Wystarczy wydać polecenie w terminalu usługi web
 ```shell
 python manage.py seed_example_data
 ```
+
+W celu uruchomienia scrappera wydajemy polecenie:
+```shell
+python manage.py fill_db
+```
