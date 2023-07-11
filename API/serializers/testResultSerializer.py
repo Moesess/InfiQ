@@ -4,9 +4,13 @@ from API.serializers.fields import CustomDateTimeField
 
 
 class TestResultSerializer(serializers.ModelSerializer):
-    tr_date_start = CustomDateTimeField()
-    tr_date_end = CustomDateTimeField()
+    uid = serializers.UUIDField(source='tr_uid', read_only=True)
+    user = serializers.StringRelatedField(source='tr_user')
+    test = serializers.StringRelatedField(source='tr_test')
+    score = serializers.CharField(source='tr_score')
+    date_start = CustomDateTimeField()
+    date_end = CustomDateTimeField()
 
     class Meta:
         model = TestResult
-        fields = ['tr_uid', 'tr_user', 'tr_test', 'tr_date_start', 'tr_date_end', 'tr_score']
+        fields = ['uid', 'user', 'test', 'score', 'date_start', 'date_end']

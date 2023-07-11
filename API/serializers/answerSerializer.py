@@ -4,8 +4,11 @@ from API.serializers.fields import CustomDateTimeField
 
 
 class AnswerSerializer(serializers.ModelSerializer):
-    a_created_at = CustomDateTimeField()
+    uid = serializers.UUIDField(source='a_uid', read_only=True)
+    text = serializers.CharField(source='a_text')
+    created_at = CustomDateTimeField(source='a_created_at', read_only=True)
+    question = serializers.CharField(source='a_question.q_uid')
 
     class Meta:
         model = Answer
-        fields = ['a_uid', 'a_text', 'a_question', 'a_correct', 'a_created_at']
+        fields = ['uid', 'text', 'created_at', 'question']
