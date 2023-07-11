@@ -19,7 +19,7 @@ class TestType(models.Model):
     """
 
     tt_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True, verbose_name="UID")
-    tt_name = models.CharField(max_length=20, verbose_name="Name")
+    tt_name = models.CharField(max_length=20, verbose_name="Name", unique=True)
     tt_text = models.TextField(verbose_name="Text")
     tt_created_at = models.DateTimeField(default=timezone.now)
 
