@@ -8,4 +8,4 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ['q_uid', 'q_testType', 'q_text', 'q_img', 'q_created_at']
+        fields = ['q_uid', 'q_id', 'q_testType', 'q_text', 'q_img', 'q_created_at']

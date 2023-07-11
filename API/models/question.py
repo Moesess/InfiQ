@@ -19,6 +19,7 @@ class Question(models.Model):
     q_text = models.TextField(verbose_name="Text")
     q_img = models.ImageField(blank=True, null=True)
     q_created_at = models.DateTimeField(default=timezone.now)
+    q_id = models.CharField(max_length=255, editable=False, blank=True, unique=True)
 
     class Meta:
         ordering = ["q_uid"]
@@ -27,3 +28,9 @@ class Question(models.Model):
 
     def __str__(self):
         return self.q_text
+
+    def save(self, *args, **kwargs):
+        if not self.q_id:
+            count = Question.objects.filter(q_testType__tt_name=self.q_testType.tt_name).count()
+            self.q_id = f"Q{count + 1}_{self.q_testType.tt_name}"
+        super().save(*args, **kwargs)

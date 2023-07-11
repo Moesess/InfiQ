@@ -3,6 +3,12 @@ import uuid
 from django.db import models
 from django.utils import timezone
 
+TEST_TYPES = {
+    "INF.02": "Sprzęt, systemy i sieci komputerowe",
+    "INF.03": "Programowanie i bazy danych",
+    "INF.04": "Projektowanie, programowanie i testowanie aplikacji",
+}
+
 
 class TestType(models.Model):
     """
