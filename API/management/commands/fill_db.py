@@ -39,14 +39,14 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS("Started scrapping"))
             # TODO: WYWALIĆ ZNACZNIKI ODPOWIEDZI A. B. C. D.
             for question_div in question_divs:
-                question_title = question_div.find('div', class_='title').text.strip()
+                question_title = question_div.find('div', class_='title').text.strip().split('. ', 1)[1].capitalize()
 
                 question = Question.objects.create(q_testType=test_type, q_text=question_title)
                 self.stdout.write(self.style.SUCCESS("Added question " + question.q_text))
                 answer_divs = question_div.find_all('div', class_='answer')
 
                 for answer_div in answer_divs:
-                    answer_text = answer_div.text.strip()
+                    answer_text = answer_div.text.strip()[2:]
 
                     if 'correct' in answer_div['class']:
                         correct = True
