@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 
 from django.db import models
 from .testType import TestType
@@ -15,6 +16,8 @@ class Question(models.Model):
     q_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True, verbose_name="UID")
     q_testType = models.ForeignKey(TestType, on_delete=models.CASCADE, verbose_name="Test type")
     q_text = models.TextField(verbose_name="Text")
+    q_img = models.ImageField(blank=True, null=True)
+    q_created_at = models.DateTimeField(default=datetime.now)
 
     class Meta:
         ordering = ["q_uid"]

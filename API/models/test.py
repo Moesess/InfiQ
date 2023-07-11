@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 
 from django.db import models
 
@@ -17,6 +18,7 @@ class Test(models.Model):
     t_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True, verbose_name="UID")
     t_testType = models.ForeignKey(TestType, on_delete=models.CASCADE, verbose_name="Test type")
     t_questions = models.ManyToManyField(Question, verbose_name="Questions")
+    t_created_at = models.DateTimeField(default=datetime.now)
 
     class Meta:
         ordering = ["t_uid"]

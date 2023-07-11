@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 
 from django.db import models
 
@@ -18,6 +19,7 @@ class Answer(models.Model):
     a_text = models.TextField(verbose_name="Text")
     a_question = models.ForeignKey(Question, related_name='answers', on_delete=models.CASCADE, verbose_name="Question")
     a_correct = models.BooleanField(verbose_name="Is correct?")
+    a_created_at = models.DateTimeField(default=datetime.now)
 
     class Meta:
         ordering = ["a_uid"]
