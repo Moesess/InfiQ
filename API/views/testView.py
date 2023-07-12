@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from ..models import Test, Question, Answer, TestType, TestResult
 from ..serializers import TestSerializer, RandomQuestionAnswerSerializer, AnswerSerializer, \
-    TestResultSerializer
+    TestResultSerializer, TestValidateSerializer
 
 
 class TestView(viewsets.ModelViewSet):
@@ -73,4 +73,43 @@ class TestView(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+    @action(methods=['post'], detail=False, url_path='random_40_question')
+    def random_40_question(self, request):
+        # Znajdź typ testu
+        testType = TestType.objects.get(tt_uid=request.data['testType'])
 
+        # Utwórz nowy test
+        test = Test.objects.create(t_testType=testType, t_user=request.user)
+
+        # Dodaj do testu jedno randomowe pytanie
+        questions = Question.objects.order_by('?')[:40]
+        test.t_questions.set(questions)
+
+        return Response(TestSerializer(test).data, status=status.HTTP_200_OK)
+
+    @action(methods=['post'], detail=False, url_path='test_validate',
+            serializer_class=TestValidateSerializer)
+    def test_validate(self, request):
+        serializer = TestValidateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        test_uid = serializer.validated_data.get('test_uid')
+        user_answers = serializer.validated_data.get('answers')
+
+        test = Test.objects.get(t_uid=test_uid)
+        questions = test.t_questions.all()
+
+        score = 0
+        for question in questions:
+            correct_answer = Answer.objects.get(a_question=question, a_correct=True)
+            user_answer = Answer.objects.get(a_uid=user_answers[str(question.q_uid)])
+            if correct_answer.a_uid == user_answer.a_uid:
+                score += 1
+
+        testResult = TestResult.objects.get(tr_test=test)
+        testResult.tr_isDone = True
+        testResult.tr_score = score
+        testResult.tr_date_end = datetime.datetime.now()
+        testResult.save()
+
+        return Response({'score': score}, status=status.HTTP_200_OK)
