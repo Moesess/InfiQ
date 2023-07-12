@@ -111,5 +111,6 @@ class TestView(viewsets.ModelViewSet):
         testResult.tr_score = score
         testResult.tr_date_end = datetime.datetime.now()
         testResult.save()
+        testResultSerializer = TestResultSerializer(testResult)
 
-        return Response({'score': score}, status=status.HTTP_200_OK)
+        return Response({'test_result': testResultSerializer.data}, status=status.HTTP_200_OK)
