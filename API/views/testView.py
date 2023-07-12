@@ -23,7 +23,7 @@ class TestView(viewsets.ModelViewSet):
         test = Test.objects.create(t_testType=testType, t_user=request.user)
 
         # Dodaj do testu jedno randomowe pytanie
-        question = Question.objects.order_by('?').first()
+        question = Question.objects.filter(q_testType__tt_name=testType).order_by('?').first()
         test.t_questions.add(question)
 
         return Response(TestSerializer(test).data, status=status.HTTP_200_OK)
@@ -82,7 +82,7 @@ class TestView(viewsets.ModelViewSet):
         test = Test.objects.create(t_testType=testType, t_user=request.user)
 
         # Dodaj do testu jedno randomowe pytanie
-        questions = Question.objects.order_by('?')[:40]
+        questions = Question.objects.filter(q_testType__tt_name=testType).order_by('?')[:40]
         test.t_questions.set(questions)
 
         return Response(TestSerializer(test).data, status=status.HTTP_200_OK)
