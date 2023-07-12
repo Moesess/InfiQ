@@ -9,9 +9,10 @@ class TestResultSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(source='tr_user')
     test = serializers.StringRelatedField(source='tr_test')
     score = serializers.CharField(source='tr_score')
-    date_start = CustomDateTimeField()
-    date_end = CustomDateTimeField()
+    date_start = CustomDateTimeField(source='tr_date_start')
+    date_end = CustomDateTimeField(source='tr_date_end')
+    isDone = serializers.BooleanField(source='tr_isDone')
 
     class Meta:
         model = TestResult
-        fields = ['uid', 'user', 'test', 'score', 'date_start', 'date_end']
+        fields = ['uid', 'user', 'test', 'isDone', 'score', 'date_start', 'date_end']

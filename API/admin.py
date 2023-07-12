@@ -22,10 +22,10 @@ class AnswerAdmin(admin.ModelAdmin):
 
 @admin.register(Test)
 class TestAdmin(admin.ModelAdmin):
-    list_display = ('t_uid', 't_testType')
+    list_display = ('t_uid', 't_testType', 't_user')
     filter_horizontal = ('t_questions',)
 
 
 @admin.register(TestResult)
 class TestResultAdmin(admin.ModelAdmin):
-    list_display = ('tr_uid', 'tr_user', 'tr_test', 'tr_date_start', 'tr_date_end', 'tr_score')
+    list_display = ('tr_uid', 'tr_test', 'tr_date_start', 'tr_date_end', 'tr_score')

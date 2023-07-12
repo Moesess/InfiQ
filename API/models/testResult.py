@@ -1,6 +1,5 @@
 import uuid
 
-from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
@@ -11,7 +10,6 @@ class TestResult(models.Model):
     """
         Results model, contains:
         uid - unique id,
-        user - user that did the test and got result,
         test - test object had all the questions,
         date_start - starting datetime for test,
         date_end - ending datetime for test,
@@ -19,11 +17,11 @@ class TestResult(models.Model):
     """
 
     tr_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True, verbose_name="UID")
-    tr_user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="User")
     tr_test = models.ForeignKey(Test, on_delete=models.CASCADE, verbose_name="Test")
     tr_date_start = models.DateTimeField(verbose_name="Start date", default=timezone.now)
     tr_date_end = models.DateTimeField(null=True, verbose_name="End date")
     tr_score = models.IntegerField(verbose_name="Score")
+    tr_isDone = models.BooleanField(default=False)
 
     class Meta:
         ordering = ["tr_uid"]
