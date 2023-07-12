@@ -35,4 +35,4 @@ class TestResult(models.Model):
         return None
 
     def __str__(self):
-        return f"{self.tr_user.username}: {self.tr_test.t_testType.tt_name} - {self.tr_score}"
+        return f"{self.tr_date_start}: {self.tr_test.t_testType.tt_name} - {self.tr_score}"
