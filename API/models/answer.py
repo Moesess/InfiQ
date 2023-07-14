@@ -8,11 +8,14 @@ from .question import Question
 
 class Answer(models.Model):
     """
-        Answer model, contains:
-        uid - unique id,
-        text - description of an Answer,
-        question - Foreign key on Question Model that answer is binded to,
-        correct - Bool, if answer is correct
+    The Answer model represents a possible answer to a question.
+    Each answer is associated with a specific question and can be marked as correct or not.
+    Fields:
+    a_uid - A unique identifier for the answer.
+    a_text - The text of the answer itself.
+    a_question - The question this answer is associated with.
+    a_correct - A boolean indicating whether this answer is correct.
+    a_created_at - The time the answer was created.
     """
 
     a_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True, verbose_name="UID")

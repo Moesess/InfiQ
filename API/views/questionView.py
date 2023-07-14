@@ -5,5 +5,5 @@ from ..serializers import QuestionSerializer
 
 
 class QuestionView(viewsets.ModelViewSet):
-    queryset = Question.objects.all()
+    queryset = Question.objects.all().prefetch_related('answers')
     serializer_class = QuestionSerializer

@@ -12,10 +12,11 @@ TEST_TYPES = {
 
 class TestType(models.Model):
     """
-        Type of Exam model, contains:
-        uid - unique id,
-        name - exam name e.g. EE.08, INF.02,
-        text - description of an exam
+    The TestType model represents the type or category of a test.
+    Each test type has a unique identifier and a name.
+    Fields:
+    tt_uid - A unique identifier for the test type.
+    tt_name - The name of the test type.
     """
 
     tt_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True, verbose_name="UID")

@@ -10,10 +10,13 @@ from .testType import TestType
 
 class Test(models.Model):
     """
-        Test model, contains:
-        uid - unique id,
-        exam - type of exam that tests is made of,
-        questions - m2m field that contains all the questions
+    The Test model represents a single instance of a test.
+    Each test is associated with a specific TestType and has a set of questions.
+    Fields:
+    t_uid - A unique identifier for the test.
+    t_testType - The type of test this test instance is associated with.
+    t_questions - The set of questions this test instance contains.
+    t_created_at - The time the test instance was created.
     """
 
     t_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True, verbose_name="UID")

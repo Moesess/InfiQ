@@ -8,12 +8,15 @@ from .test import Test
 
 class TestResult(models.Model):
     """
-        Results model, contains:
-        uid - unique id,
-        test - test object had all the questions,
-        date_start - starting datetime for test,
-        date_end - ending datetime for test,
-        score - final score that will be defined TODO
+    The TestResult model represents the result of a user's test.
+    Each test result is associated with a specific user and test and records the start time, end time, and score.
+    Fields:
+    tr_uid - A unique identifier for the test result.
+    tr_user - The user who completed the test.
+    tr_test - The test that was completed.
+    tr_date_start - The start time of the test.
+    tr_date_end - The end time of the test.
+    tr_score - The score the user achieved on the test. It should be calculated as correct answers * some time factor
     """
 
     tr_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True, verbose_name="UID")

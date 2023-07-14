@@ -16,8 +16,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_answers(obj):
-        answers = Answer.objects.filter(a_question=obj)
-        return AnswerSerializer(answers, many=True).data
+        return AnswerSerializer(obj.answers.all(), many=True).data
 
     class Meta:
         model = Question

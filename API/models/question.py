@@ -8,10 +8,15 @@ from .testType import TestType
 
 class Question(models.Model):
     """
-        Question model, contains:
-        uid - unique id,
-        exam - type of exam e.g. EE.08, EE.09, foreign key from model Exam
-        text - description of a question, text field
+    The Question model represents a single question in a test.
+    Each question is associated with a specific TestType, has a unique text, and can have an image associated with it.
+    Fields:
+    q_uid - A unique identifier for the question.
+    q_testType - The type of test this question is associated with.
+    q_text - The text of the question itself.
+    q_img - An optional image associated with the question.
+    q_created_at - The time the question was created.
+    q_id - A unique ID for the question, automatically generated upon saving.
     """
 
     q_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True, verbose_name="UID")
