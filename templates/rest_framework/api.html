@@ -1,0 +1,10 @@
+{% extends 'rest_framework/base.html' %}
+
+{% block navbar %}
+    <ul class="nav navbar-nav">
+        {% if request.user.is_authenticated %}
+        <li><a href="{% url 'rest_framework:logout' %}">Logout</a></li>
+        {% endif %}
+    </ul>
+    {{ block.super }}
+{% endblock %}
