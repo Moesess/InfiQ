@@ -17,6 +17,7 @@ class TestResult(models.Model):
     tr_date_start - The start time of the test.
     tr_date_end - The end time of the test.
     tr_score - The score the user achieved on the test. It should be calculated as correct answers * some time factor
+    TODO: DATY START JEST PRZESUNIĘTA O 2H
     """
 
     tr_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True, verbose_name="UID")

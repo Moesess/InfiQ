@@ -29,14 +29,13 @@ class Command(BaseCommand):
         response = requests.get(url)
         test_type = TestType.objects.create(tt_name=test_type, tt_text=TEST_TYPES[test_type])
 
-        # TODO: WYWALIĆ NUMERKI PYTAŃ, ONE BĘDĄ GENEROWANE NASZĄ FUNKCJĄ W MODELU
         if response.status_code == 200:
             self.stdout.write(self.style.SUCCESS("Connected to website"))
             soup = BeautifulSoup(response.content, 'html.parser')
 
             question_divs = soup.find_all('div', class_='question')
             self.stdout.write(self.style.SUCCESS("Started scrapping"))
-            # TODO: WYWALIĆ ZNACZNIKI ODPOWIEDZI A. B. C. D.
+
             for question_div in question_divs:
                 question_title = question_div.find('div', class_='title').text.strip().split('. ', 1)[1].capitalize()
 
