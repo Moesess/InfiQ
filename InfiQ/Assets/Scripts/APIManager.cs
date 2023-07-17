@@ -16,6 +16,8 @@ public class APIManager : MonoBehaviour
 
     void Awake()
     {
+        DontDestroyOnLoad(gameObject);
+
         if (instance == null)
         {
             instance = this;
@@ -25,6 +27,7 @@ public class APIManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
 
     public IEnumerator GetRequest(string url, System.Action<string> callback)
     {

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,22 @@ public class QuizManager : MonoBehaviour
 {
     private Question currentQuestion;
     private List<Answer> currentAnswers;
+    private QuizManager instance;
+
+    void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+
 
     void Start()
     {
