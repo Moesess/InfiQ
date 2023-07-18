@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "844312363775",
+    "project_id": "infiq-392812",
+    "storage_bucket": "infiq-392812.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844312363775:android:12b152413289b778d2c2ca",
+        "android_client_info": {
+          "package_name": "com.TKWare.com.unity.template.mobile2D"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "844312363775-nf2lgo8lsrn6eev1aelmto602ucalkmv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0k03S08y858nx-o5Vrvl-RtPSuq5JxaM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "844312363775-9ghba1n1h2cq82dffh6bgvlttenj607o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "844312363775-ldf3u9ili06gffhhebm8qg8ibrclnogl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.TKWare.com.unity.template.mobile2D"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
