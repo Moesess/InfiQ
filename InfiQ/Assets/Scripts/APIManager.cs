@@ -1,19 +1,22 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class APIManager : MonoBehaviour
 {
     public static APIManager instance;
-    public const string QUESTION_URL = "http://localhost:8000/Questions/";
-    public const string ANSWER_URL = "http://localhost:8000/Answers/";
-    public const string TEST_TYPES = "http://localhost:8000/TestTypes/";
-    public const string START_SINGLE_QUESTION_URL= "http://localhost:8000/Tests/random_question/";
-    public const string VALIDATE_SINGLE_QUESTION_URL= "http://localhost:8000/Tests/random_question_answer/";
-    public const string START_TEST_URL = "http://localhost:8000/Tests/random_40_question/";
-    public const string VALIDATE_TEST_URL = "http://localhost:8000/Tests/test_validate/";
 
+    // Add a property to store the authentication token
+    public string AuthToken { get; set; }
+
+    public const string QUESTION_URL = "https://4648-109-173-228-222.ngrok-free.app/Questions/";
+    public const string LOGIN_URL = "https://4648-109-173-228-222.ngrok-free.app/login/";
+    public const string ANSWER_URL = "https://4648-109-173-228-222.ngrok-free.app/Answers/";
+    public const string TEST_TYPES_URL = "https://4648-109-173-228-222.ngrok-free.app/TestTypes/";
+    public const string START_SINGLE_QUESTION_URL = "https://4648-109-173-228-222.ngrok-free.app/Tests/random_question/";
+    public const string VALIDATE_SINGLE_QUESTION_URL = "https://4648-109-173-228-222.ngrok-free.app/Tests/random_question_answer/";
+    public const string START_TEST_URL = "https://4648-109-173-228-222.ngrok-free.app/Tests/random_40_question/";
+    public const string VALIDATE_TEST_URL = "https://4648-109-173-228-222.ngrok-free.app/Tests/test_validate/";
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -33,6 +36,11 @@ public class APIManager : MonoBehaviour
     {
         using (UnityWebRequest www = UnityWebRequest.Get(url))
         {
+            if (!string.IsNullOrEmpty(AuthToken))
+            {
+                www.SetRequestHeader("Authorization", "Bearer " + AuthToken);
+            }
+
             yield return www.SendWebRequest();
 
             if (www.result == UnityWebRequest.Result.Success)
@@ -54,6 +62,11 @@ public class APIManager : MonoBehaviour
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
 
+        if (!string.IsNullOrEmpty(AuthToken)) 
+        {
+            request.SetRequestHeader("Authorization", "Bearer " + AuthToken);
+        }
+
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.Success)
@@ -65,4 +78,27 @@ public class APIManager : MonoBehaviour
             Debug.Log(request.error);
         }
     }
+
+    public IEnumerator Login(string username, string password, System.Action<string> callback)
+    {
+        string json = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
+        var request = new UnityWebRequest(APIManager.LOGIN_URL, "POST");
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            callback(request.downloadHandler.text);
+        }
+        else
+        {
+            Debug.Log(request.error);
+        }
+    }
+
 }
+

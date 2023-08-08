@@ -1,24 +1,43 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class QuizManager : MonoBehaviour
+[System.Serializable]
+public class TestType
 {
-    private Question currentQuestion;
-    private List<Answer> currentAnswers;
-    private QuizManager instance;
+    public string uid;
+    public string name;
+    public string text;
+    public string created_at;
+};
+
+[System.Serializable]
+public class TestTypesResponse
+{
+    public int count;
+    public string next;
+    public string previous;
+    public List<TestType> results;
+};
+
+
+public class TestManager : MonoBehaviour
+{
+    private Question CurrentQuestion;
+    private List<Answer> CurrentAnswers;
+    private TestManager Instance;
+
+    private string sInf2_uid;
+    private string sInf3_uid;
+    private string sInf4_uid;
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-        else if (instance != this)
+        else
         {
             Destroy(gameObject);
         }
@@ -27,9 +46,35 @@ public class QuizManager : MonoBehaviour
 
     void Start()
     {
-        // Load the first question
-        StartTest();
+        StartCoroutine(APIManager.instance.GetRequest(
+            APIManager.TEST_TYPES_URL,
+            result =>
+            {
+                TestTypesResponse response = JsonUtility.FromJson<TestTypesResponse>(result);
+
+                foreach (TestType testType in response.results)
+                {
+                    if (testType.name == "INF.02")
+                    {
+                        sInf2_uid = testType.uid;
+                    }
+                    else if (testType.name == "INF.03")
+                    {
+                        sInf3_uid = testType.uid;
+                    }
+                    else if (testType.name == "INF.04")
+                    {
+                        sInf4_uid = testType.uid;
+                    }
+                }
+
+                Debug.Log("INF.02 uid: " + sInf2_uid);
+                Debug.Log("INF.03 uid: " + sInf3_uid);
+                Debug.Log("INF.04 uid: " + sInf4_uid);
+            }
+        ));
     }
+
 
     void LoadQuestion()
     {
@@ -39,7 +84,7 @@ public class QuizManager : MonoBehaviour
     public void AnswerButtonClicked(int buttonIndex)
     {
         // Store the answer
-        StoreAnswer(currentQuestion.id, currentAnswers[buttonIndex].id);
+        StoreAnswer(CurrentQuestion.id, CurrentAnswers[buttonIndex].id);
     }
 
     public void NextButtonClicked()
@@ -48,9 +93,29 @@ public class QuizManager : MonoBehaviour
         LoadQuestion();
     }
 
-    public void StartTest()
+    public void StartTest(string sTestType)
     {
-        StartCoroutine(APIManager.instance.GetRequest(APIManager.QUESTION_URL, result =>
+        string sTestType_uid;
+
+        switch (sTestType)
+        {
+            case "INF.02":
+                sTestType_uid = sInf2_uid;
+                break;
+            case "INF.03":
+                sTestType_uid = sInf3_uid;
+                break;
+            case "INF.04":
+                sTestType_uid = sInf4_uid;
+                break;
+            default:
+                sTestType_uid = "";
+                break;
+        }
+
+        string json = "{ \"testType\": \"" + sTestType_uid + "\" }";
+       
+        StartCoroutine(APIManager.instance.PostRequest(APIManager.START_TEST_URL, json, result =>
         {
             Debug.Log(result);
         }));

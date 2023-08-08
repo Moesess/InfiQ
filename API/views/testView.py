@@ -4,6 +4,7 @@ from django.db import transaction
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.status import HTTP_401_UNAUTHORIZED
 
 from ..models import Test, Question, Answer, TestType, TestResult
 from ..serializers import TestSerializer, RandomQuestionAnswerSerializer, AnswerSerializer, \
@@ -70,6 +71,9 @@ class TestView(viewsets.ModelViewSet):
     @transaction.atomic
     @action(methods=['post'], detail=False, url_path='random_40_question')
     def random_40_question(self, request) -> Response:
+        if request.user.is_anonymous:
+            return Response({"detail": "Authentication credentials were not provided."}, status=HTTP_401_UNAUTHORIZED)
+
         # Znajdź typ testu
         testType = TestType.objects.get(tt_uid=request.data['testType'])
 
