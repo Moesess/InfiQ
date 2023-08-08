@@ -1,13 +1,35 @@
 using UnityEngine;
 using Firebase.Auth;
 using Google;
-using TMPro;
+using Firebase;
+using Firebase.Extensions;
 
 public class FirebaseManager : MonoBehaviour
 {
     private const string WEB_CLIENT_ID = "844312363775-nf2lgo8lsrn6eev1aelmto602ucalkmv.apps.googleusercontent.com";
 
-    [SerializeField] GameObject info;
+    private FirebaseAuth auth;
+
+    private void Awake()
+    {
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
+        {
+            if (task.Exception != null)
+            {
+                Debug.LogError($"Failed to check Firebase dependencies: {task.Exception}");
+                return;
+            }
+
+            InitializeFirebase();
+        });
+    }
+
+    private void InitializeFirebase()
+    {
+        FirebaseApp app = FirebaseApp.DefaultInstance;
+        auth = FirebaseAuth.DefaultInstance;
+    }
+
 
     public void SignInWithGoogle()
     {
@@ -23,17 +45,17 @@ public class FirebaseManager : MonoBehaviour
             {
                 if (task.IsCanceled)
                 {
-                    info.GetComponent<TextMeshProUGUI>().text += "Sign-in canceled.";
+                    Debug.LogError("Sign-in canceled.");
                 }
                 else if (task.IsFaulted)
                 {
-                    info.GetComponent<TextMeshProUGUI>().text += "Sign-in encountered an error.";
+                    Debug.LogError("Sign-in encountered an error.");
                     Debug.LogError(task.Exception);
                 }
                 else
                 {
                     GoogleSignInUser googleUser = task.Result;
-                    info.GetComponent<TextMeshProUGUI>().text += "Google sign-in succeeded.";
+                    Debug.Log("Google sign-in succeeded.");
 
                     string idToken = googleUser.IdToken;
                     string accessToken = googleUser.AuthCode;
@@ -45,51 +67,47 @@ public class FirebaseManager : MonoBehaviour
 
     private void SignInWithGoogleOnFirebase(string idToken, string accessToken)
     {
-        Credential credential = GoogleAuthProvider.GetCredential(idToken, accessToken);
-        FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(credential).ContinueWith(task =>
+        try 
         {
-            if (task.IsCanceled)
+            Credential credential = GoogleAuthProvider.GetCredential(idToken, accessToken);
+            auth.SignInWithCredentialAsync(credential).ContinueWith(task =>
             {
-                info.GetComponent<TextMeshProUGUI>().text += "Sign-in canceled.";
-                return;
-            }
-            if (task.IsFaulted)
-            {
-                info.GetComponent<TextMeshProUGUI>().text += "Firebase Sign-in encountered an error.";
-                return;
-            }
-
-            FirebaseUser newUser = task.Result;
-            info.GetComponent<TextMeshProUGUI>().text += ("User signed in successfully" + newUser.DisplayName + " " + newUser.UserId);
-
-            // Retrieve the Firebase token
-            newUser.TokenAsync(true).ContinueWith(tokenTask =>
-            {
-                if (tokenTask.IsCanceled)
+                if (task.IsCanceled)
                 {
-                    info.GetComponent<TextMeshProUGUI>().text += ("TokenAsync was canceled.");
+                    Debug.LogError("Sign-in canceled.");
                     return;
                 }
-                if (tokenTask.IsFaulted)
+                if (task.IsFaulted)
                 {
-                    info.GetComponent<TextMeshProUGUI>().text += ("TokenAsync encountered an error.");
+                    Debug.LogError("Firebase Sign-in encountered an error.");
                     return;
                 }
 
-                string firebaseToken = tokenTask.Result;
-                info.GetComponent<TextMeshProUGUI>().text += ("Token: " + firebaseToken);
-                APIManager.instance.AuthToken = firebaseToken;
+                FirebaseUser newUser = task.Result;
+                Debug.Log("User signed in successfully" + newUser.DisplayName + " " + newUser.UserId);
+
+                // Retrieve the Firebase token
+                newUser.TokenAsync(true).ContinueWith(tokenTask =>
+                {
+                    if (tokenTask.IsCanceled)
+                    {
+                        Debug.LogError("TokenAsync was canceled.");
+                        return;
+                    }
+                    if (tokenTask.IsFaulted)
+                    {
+                        Debug.LogError("TokenAsync encountered an error.");
+                        return;
+                    }
+
+                    string firebaseToken = tokenTask.Result;
+                    APIManager.instance.AuthToken = firebaseToken;
+                });
             });
-        });
-    }
-
-    private void HandleError(string message, System.Exception exception = null)
-    {
-        Debug.LogError(message);
-        info.GetComponent<TextMeshProUGUI>().text += message;
-        if (exception != null)
+        }
+        catch (System.Exception e) 
         {
-            Debug.LogError(exception);
+            Debug.LogError(e.Message);
         }
     }
 }
