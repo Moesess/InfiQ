@@ -14,11 +14,12 @@ class FirebaseAuthentication(BaseAuthentication):
         token = auth_header.split(' ')[1]
         try:
             decoded_token = auth.verify_id_token(token)
-            user_name = decoded_token["aud"]
+            user_name = decoded_token["name"]
+            email = decoded_token["email"]
             print(f"TOKEN: {decoded_token}")
             print(f"IMIE: {user_name}")
 
-            user, created = User.objects.get_or_create(username=user_name)
+            user, created = User.objects.get_or_create(username=user_name, email=email)
             if created:
                 user.email = decoded_token.get('email', '')
                 user.username = decoded_token.get('name', '')
