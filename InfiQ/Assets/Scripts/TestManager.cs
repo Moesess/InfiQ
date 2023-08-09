@@ -98,6 +98,9 @@ public class TestManager : MonoBehaviour
     [SerializeField] GameObject AnsC;
     [SerializeField] GameObject AnsD;
     [SerializeField] GameObject MainMenuCanvas;
+    [SerializeField] Color ButtonColor;
+    [SerializeField] Color CorrectAnswerColor;
+    [SerializeField] Color WrongAnswerColor;
 
     void Awake()
     {
@@ -198,7 +201,7 @@ public class TestManager : MonoBehaviour
 
     }
 
-    private void ReturnToMenu()
+    public void ReturnToMenu()
     {
         MainMenuCanvas.SetActive(true);
         QuestionCanvas.SetActive(false);
@@ -236,10 +239,10 @@ public class TestManager : MonoBehaviour
         AnsB.GetComponent<Button>().enabled = true;
         AnsC.GetComponent<Button>().enabled = true;
         AnsD.GetComponent<Button>().enabled = true;
-        AnsA.GetComponent<Image>().color = Color.white;
-        AnsB.GetComponent<Image>().color = Color.white;
-        AnsC.GetComponent<Image>().color = Color.white;
-        AnsD.GetComponent<Image>().color = Color.white;
+        AnsA.GetComponent<Image>().color = ButtonColor;
+        AnsB.GetComponent<Image>().color = ButtonColor;
+        AnsC.GetComponent<Image>().color = ButtonColor;
+        AnsD.GetComponent<Image>().color = ButtonColor;
     }
 
     IEnumerator WaitAndDisplayNextQuestion(int nextQuestionIndex)
@@ -273,16 +276,16 @@ public class TestManager : MonoBehaviour
         }
 
         if (question.answers[0].correct)
-            AnsA.GetComponent<Image>().color = Color.green;
+            AnsA.GetComponent<Image>().color = CorrectAnswerColor;
         if (question.answers[1].correct)
-            AnsB.GetComponent<Image>().color = Color.green;
+            AnsB.GetComponent<Image>().color = CorrectAnswerColor;
         if (question.answers[2].correct)
-            AnsC.GetComponent<Image>().color = Color.green;
+            AnsC.GetComponent<Image>().color = CorrectAnswerColor;
         if (question.answers[3].correct)
-            AnsD.GetComponent<Image>().color = Color.green;
+            AnsD.GetComponent<Image>().color = CorrectAnswerColor;
 
         if (!question.answers[iAns].correct)
-            selectedAns.GetComponent<Image>().color = Color.red;
+            selectedAns.GetComponent<Image>().color = WrongAnswerColor;
 
         StartCoroutine(WaitAndDisplayNextQuestion(iCurrentQuestion+1));
     }
