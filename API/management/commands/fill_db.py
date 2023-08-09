@@ -1,9 +1,35 @@
+from io import BytesIO
+
 import requests
 from bs4 import BeautifulSoup
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
 
+from PIL import Image
+
 from API.models import TestType, Question, Answer, TEST_TYPES
+
+
+def resize_image(image, desired_width, desired_height):
+    # Calculate the aspect ratio of the image and the desired size
+    img_aspect = image.width / image.height
+    desired_aspect = desired_width / desired_height
+
+    # Determine the dimensions to resize the image to while maintaining its aspect ratio
+    if img_aspect > desired_aspect:
+        new_width = desired_width
+        new_height = int(desired_width / img_aspect)
+    else:
+        new_height = desired_height
+        new_width = int(desired_height * img_aspect)
+
+    # Create a new image with the desired size and a white background
+    new_image = Image.new("RGB", (desired_width, desired_height), "white")
+    # Paste the resized image onto the center of the new image
+    new_image.paste(image.resize((new_width, new_height)),
+                    ((desired_width - new_width) // 2, (desired_height - new_height) // 2))
+
+    return new_image
 
 
 class Command(BaseCommand):
@@ -61,12 +87,21 @@ class Command(BaseCommand):
                         image_response = requests.get(url + image_url)
 
                         if image_response.status_code == 200:
-                            image_file = ContentFile(image_response.content)
+                            # Open the image using Pillow
+                            image = Image.open(ContentFile(image_response.content))
+
+                            # Resize the image
+                            resized_image = resize_image(image, 720, 450)
+
+                            # Convert the resized image back to a file-like object
+                            image_io = BytesIO()
+                            resized_image.save(image_io, format='JPEG')
+                            image_file = ContentFile(image_io.getvalue())
 
                             image_file.name = 'question_' + str(question.q_uid) + '.jpg'
-
                             question.q_img.save(image_file.name, image_file)
                             question.save()
+
 
                     except TypeError as e:  # Usuń pytanie, jeśli nie udało się pobrać zdjęcia
                         self.stdout.write(self.style.WARNING(f'ERROR Could not scrape question {question.q_text}: {e}'))

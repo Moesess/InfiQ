@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AdaptivePerformance.Provider;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
@@ -104,6 +105,48 @@ public class TestManager : MonoBehaviour
     [SerializeField] Color ButtonColor;
     [SerializeField] Color CorrectAnswerColor;
     [SerializeField] Color WrongAnswerColor;
+
+    IEnumerator WaitAndDisplayNextQuestion(int nextQuestionIndex)
+    {
+        yield return new WaitForSeconds(1); // Wait for 3 seconds
+        DisplayQuestion(nextQuestionIndex);
+    }
+
+    IEnumerator LoadImageFromURL(string imageURL, RawImage imageComponent)
+    {
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(imageURL);
+        yield return request.SendWebRequest();
+
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("Failed to load the image: " + request.error);
+        }
+        else
+        {
+            Texture2D texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+
+            float imageAspect = (float)texture.width / texture.height;
+            float rawImageAspect = imageComponent.rectTransform.rect.width / imageComponent.rectTransform.rect.height;
+
+            Debug.Log(imageAspect);
+            Debug.Log(rawImageAspect);
+
+            if (imageAspect <= rawImageAspect)
+            {
+                // Image is wider than the display area
+                float scaleHeight = rawImageAspect / imageAspect;
+                imageComponent.uvRect = new Rect(0, (1 - scaleHeight) / 2, 1, scaleHeight);
+            }
+            else
+            {
+                // Image is taller than the display area
+                float scaleWidth = imageAspect / rawImageAspect;
+                imageComponent.uvRect = new Rect((1 - scaleWidth) / 2, 0, scaleWidth, 1);
+            }
+
+            imageComponent.texture = texture;
+        }
+    }
 
     void Awake()
     {
@@ -262,28 +305,6 @@ public class TestManager : MonoBehaviour
     public void ShowImage()
     {
         QuestionImage.enabled = !QuestionImage.enabled;
-    }
-
-    IEnumerator WaitAndDisplayNextQuestion(int nextQuestionIndex)
-    {
-        yield return new WaitForSeconds(1); // Wait for 3 seconds
-        DisplayQuestion(nextQuestionIndex);
-    }
-
-    IEnumerator LoadImageFromURL(string imageURL, RawImage imageComponent)
-    {
-        UnityWebRequest request = UnityWebRequestTexture.GetTexture(imageURL);
-        yield return request.SendWebRequest();
-
-        if (request.result != UnityWebRequest.Result.Success)
-        {
-            Debug.LogError("Failed to load the image: " + request.error);
-        }
-        else
-        {
-            Texture2D texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
-            imageComponent.texture = texture;
-        }
     }
 
     public void SelectAnswer(int iAns)

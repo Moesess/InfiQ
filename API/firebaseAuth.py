@@ -7,7 +7,7 @@ from firebase_admin import auth
 class FirebaseAuthentication(BaseAuthentication):
     def authenticate(self, request):
         auth_header = request.headers.get('Authorization')
-        print(auth_header)
+        # print(auth_header)
         if not auth_header:
             return None
 
@@ -16,8 +16,8 @@ class FirebaseAuthentication(BaseAuthentication):
             decoded_token = auth.verify_id_token(token)
             user_name = decoded_token["name"]
             email = decoded_token["email"]
-            print(f"TOKEN: {decoded_token}")
-            print(f"IMIE: {user_name}")
+            # print(f"TOKEN: {decoded_token}")
+            # print(f"IMIE: {user_name}")
 
             user, created = User.objects.get_or_create(username=user_name, email=email)
             if created:

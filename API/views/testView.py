@@ -1,7 +1,6 @@
-import datetime
-
 from django.contrib.auth.models import User
 from django.db import transaction
+from django.utils import timezone
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -98,8 +97,6 @@ class TestView(viewsets.ModelViewSet):
             serializer_class=TestValidateSerializer)
     def test_validate(self, request) -> Response:
         # Utwórz serializator na podstawie żądania i wypełnij danymi
-        print(request.data)
-
         serializer = TestValidateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -124,7 +121,7 @@ class TestView(viewsets.ModelViewSet):
             testResult = TestResult.objects.select_related('tr_test').get(tr_test=test)
             testResult.tr_isDone = True
             testResult.tr_score = score
-            testResult.tr_date_end = datetime.datetime.now()
+            testResult.tr_date_end = timezone.now()
             testResult.save()
 
         testResultSerializer = TestResultSerializer(testResult)
