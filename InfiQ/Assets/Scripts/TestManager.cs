@@ -115,6 +115,7 @@ public class TestManager : MonoBehaviour
 
     void Start()
     {
+        ReturnToMenu();
         StartCoroutine(APIManager.instance.GetRequest(
             APIManager.TEST_TYPES_URL,
             result =>
