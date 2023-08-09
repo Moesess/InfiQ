@@ -88,7 +88,7 @@ class TestView(viewsets.ModelViewSet):
         test = Test.objects.create(t_testType=testType, t_user=user)
 
         # Dodaj do testu jedno randomowe pytanie
-        questions = Question.objects.filter(q_testType__tt_name=testType).order_by('?')[:40]
+        questions = Question.objects.filter(q_testType__tt_name=testType).order_by('?')[:5]
         test.t_questions.set(questions)
 
         return Response(TestSerializer(test).data, status=status.HTTP_200_OK)
@@ -98,6 +98,8 @@ class TestView(viewsets.ModelViewSet):
             serializer_class=TestValidateSerializer)
     def test_validate(self, request) -> Response:
         # Utwórz serializator na podstawie żądania i wypełnij danymi
+        print(request.data)
+
         serializer = TestValidateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -106,7 +108,7 @@ class TestView(viewsets.ModelViewSet):
         user_answers = serializer.validated_data.get('answers')
 
         # Pobierz test na podstawie uid i pytania do testu
-        test = Test.objects.select_related('t_questions').get(t_uid=test_uid)
+        test = Test.objects.get(t_uid=test_uid)
 
         score = 0
         # Sprawdzanie odpowiedzi i zliczanie punktów

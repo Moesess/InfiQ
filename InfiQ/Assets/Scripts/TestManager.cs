@@ -65,6 +65,13 @@ public class Answer
     public bool correct;
 }
 
+[System.Serializable]
+public class TestValidateData
+{
+    public string test_uid;
+    public Dictionary<string, string> answers;
+}
+
 public class TestManager : MonoBehaviour
 {
     private TestManager Instance;
@@ -76,6 +83,8 @@ public class TestManager : MonoBehaviour
 
     [SerializeField]
     private List<string> AnswersUIDS = new();
+
+    private string sCurrentTest;
 
     private string sInf2_uid;
     private string sInf3_uid;
@@ -134,8 +143,16 @@ public class TestManager : MonoBehaviour
     private void DisplayQuestion(int index)
     {
 
-        if (index < 0 || index >= Questions.Count)
+        if (index < 0) 
+        {
             return;
+        }
+        if (index >= Questions.Count)
+        {
+            ValidateTest();
+            ReturnToMenu();
+            return;
+        }
 
         EnableButtons();
 
@@ -153,10 +170,43 @@ public class TestManager : MonoBehaviour
         AnsD.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = question.answers[3].text;
     }
 
+    private void ValidateTest()
+    {
+        // Start building the JSON string
+        string json = "{ \"test_uid\": \"" + sCurrentTest + "\", \"answers\": {";
+
+        // Add each answer to the JSON string
+        for (int i = 0; i < Questions.Count; i++)
+        {
+            json += "\"" + Questions[i].uid + "\": \"" + AnswersUIDS[i] + "\"";
+            if (i < Questions.Count - 1) // If not the last item, add a comma
+            {
+                json += ",";
+            }
+        }
+
+        json += "} }"; // Close the answers and main object
+
+        StartCoroutine(APIManager.instance.PostRequestWithRetry(APIManager.VALIDATE_TEST_URL, json, result =>
+        {
+            if (result == null)
+                return;
+
+            // Handle the response here if needed
+        }));
+
+    }
+
+    private void ReturnToMenu()
+    {
+        MainMenuCanvas.SetActive(true);
+        QuestionCanvas.SetActive(false);
+    }
+
     bool GenerateQuestions(string result)
     {
         TestResponse testResponse = JsonUtility.FromJson<TestResponse>(result);
-
+        sCurrentTest = testResponse.uid;
         // Clear the existing questions (if any)
         Questions.Clear();
         AnswersUIDS.Clear();
@@ -193,7 +243,7 @@ public class TestManager : MonoBehaviour
 
     IEnumerator WaitAndDisplayNextQuestion(int nextQuestionIndex)
     {
-        yield return new WaitForSeconds(3); // Wait for 3 seconds
+        yield return new WaitForSeconds(1); // Wait for 3 seconds
         DisplayQuestion(nextQuestionIndex);
     }
 
