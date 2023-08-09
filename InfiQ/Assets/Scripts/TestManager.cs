@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -24,14 +25,22 @@ public class TestTypesResponse
 };
 
 [System.Serializable]
+public class TestResultWrapper
+{
+    public TestResult test_result;
+}
+
+[System.Serializable]
 public class TestResult
 {
     public string uid;
     public string test;
     public bool isDone;
     public string score;
+    public int final_score;
     public string date_start;
     public string date_end;
+    public string duration;
 }
 
 [System.Serializable]
@@ -123,26 +132,6 @@ public class TestManager : MonoBehaviour
         else
         {
             Texture2D texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
-
-            float imageAspect = (float)texture.width / texture.height;
-            float rawImageAspect = imageComponent.rectTransform.rect.width / imageComponent.rectTransform.rect.height;
-
-            Debug.Log(imageAspect);
-            Debug.Log(rawImageAspect);
-
-            if (imageAspect <= rawImageAspect)
-            {
-                // Image is wider than the display area
-                float scaleHeight = rawImageAspect / imageAspect;
-                imageComponent.uvRect = new Rect(0, (1 - scaleHeight) / 2, 1, scaleHeight);
-            }
-            else
-            {
-                // Image is taller than the display area
-                float scaleWidth = imageAspect / rawImageAspect;
-                imageComponent.uvRect = new Rect((1 - scaleWidth) / 2, 0, scaleWidth, 1);
-            }
-
             imageComponent.texture = texture;
         }
     }
@@ -252,8 +241,9 @@ public class TestManager : MonoBehaviour
         {
             if (result == null)
                 return;
-        }));
 
+            PopUpManager.instance.PrepFinishPopup(result, Questions, AnswersUIDS);
+        }));
     }
 
     public void ReturnToMenu()

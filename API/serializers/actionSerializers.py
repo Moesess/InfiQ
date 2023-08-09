@@ -10,3 +10,4 @@ class RandomQuestionAnswerSerializer(serializers.Serializer):
 class TestValidateSerializer(serializers.Serializer):
     test_uid = serializers.UUIDField()
     answers = serializers.DictField(child=serializers.UUIDField())
+

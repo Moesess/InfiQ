@@ -38,5 +38,10 @@ class TestResult(models.Model):
             return self.tr_date_end - self.tr_date_start
         return None
 
+    @property
+    def calculate_score(self):
+        score = self.tr_score * 1000 / self.duration.seconds
+        return score
+
     def __str__(self):
         return f"{self.tr_date_start}: {self.tr_test.t_testType.tt_name} - {self.tr_score}"
