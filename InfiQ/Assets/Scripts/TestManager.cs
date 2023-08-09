@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -98,6 +99,8 @@ public class TestManager : MonoBehaviour
     [SerializeField] GameObject AnsC;
     [SerializeField] GameObject AnsD;
     [SerializeField] GameObject MainMenuCanvas;
+    [SerializeField] GameObject ShowImageButton;
+    [SerializeField] RawImage QuestionImage;
     [SerializeField] Color ButtonColor;
     [SerializeField] Color CorrectAnswerColor;
     [SerializeField] Color WrongAnswerColor;
@@ -119,6 +122,9 @@ public class TestManager : MonoBehaviour
     void Start()
     {
         ReturnToMenu();
+        ShowImageButton.SetActive(false);
+        QuestionImage.enabled = false;
+
         StartCoroutine(APIManager.instance.GetRequest(
             APIManager.TEST_TYPES_URL,
             result =>
@@ -167,16 +173,25 @@ public class TestManager : MonoBehaviour
         QuestionID.GetComponent<TextMeshProUGUI>().text = question.id;
         QuestionDesc.GetComponent<TextMeshProUGUI>().text = question.text;
 
-        // Assuming the answers are in the order A, B, C, D
         AnsA.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = question.answers[0].text;
         AnsB.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = question.answers[1].text;
         AnsC.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = question.answers[2].text;
         AnsD.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = question.answers[3].text;
+
+        if (question.img != "")
+        {
+            ShowImageButton.SetActive(true);
+            StartCoroutine(LoadImageFromURL(APIManager.URL + question.img, QuestionImage));
+        }
+        else 
+        {
+            ShowImageButton.SetActive(false);
+            QuestionImage.enabled = false;
+        }
     }
 
     private void ValidateTest()
     {
-        // Start building the JSON string
         string json = "{ \"test_uid\": \"" + sCurrentTest + "\", \"answers\": {";
 
         // Add each answer to the JSON string
@@ -189,14 +204,12 @@ public class TestManager : MonoBehaviour
             }
         }
 
-        json += "} }"; // Close the answers and main object
+        json += "} }"; 
 
         StartCoroutine(APIManager.instance.PostRequestWithRetry(APIManager.VALIDATE_TEST_URL, json, result =>
         {
             if (result == null)
                 return;
-
-            // Handle the response here if needed
         }));
 
     }
@@ -211,7 +224,8 @@ public class TestManager : MonoBehaviour
     {
         TestResponse testResponse = JsonUtility.FromJson<TestResponse>(result);
         sCurrentTest = testResponse.uid;
-        // Clear the existing questions (if any)
+
+        // Clear the existing questions and answers (if any)
         Questions.Clear();
         AnswersUIDS.Clear();
         iCurrentQuestion = 0;
@@ -245,10 +259,31 @@ public class TestManager : MonoBehaviour
         AnsD.GetComponent<Image>().color = ButtonColor;
     }
 
+    public void ShowImage()
+    {
+        QuestionImage.enabled = !QuestionImage.enabled;
+    }
+
     IEnumerator WaitAndDisplayNextQuestion(int nextQuestionIndex)
     {
         yield return new WaitForSeconds(1); // Wait for 3 seconds
         DisplayQuestion(nextQuestionIndex);
+    }
+
+    IEnumerator LoadImageFromURL(string imageURL, RawImage imageComponent)
+    {
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(imageURL);
+        yield return request.SendWebRequest();
+
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("Failed to load the image: " + request.error);
+        }
+        else
+        {
+            Texture2D texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+            imageComponent.texture = texture;
+        }
     }
 
     public void SelectAnswer(int iAns)

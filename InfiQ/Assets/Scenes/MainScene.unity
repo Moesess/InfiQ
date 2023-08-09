@@ -1331,6 +1331,8 @@ MonoBehaviour:
   AnsC: {fileID: 1618813112}
   AnsD: {fileID: 1618813111}
   MainMenuCanvas: {fileID: 2051094040}
+  ShowImageButton: {fileID: 1263384325}
+  QuestionImage: {fileID: 1533112461}
   ButtonColor: {r: 0.23584908, g: 0.23584908, b: 0.23584908, a: 1}
   CorrectAnswerColor: {r: 0, g: 0.30980393, b: 0.03137255, a: 1}
   WrongAnswerColor: {r: 0.509434, g: 0, b: 0, a: 1}
@@ -2070,6 +2072,11 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &1263384325 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6124866786135700394, guid: 5cdcddc29d234424eaa9dedbcc354498, type: 3}
+  m_PrefabInstance: {fileID: 1618813109}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1504297323
 GameObject:
   m_ObjectHideFlags: 0
@@ -2282,6 +2289,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1532313673}
   m_CullTransparentMesh: 1
+--- !u!114 &1533112461 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2128109807111199641, guid: 5cdcddc29d234424eaa9dedbcc354498, type: 3}
+  m_PrefabInstance: {fileID: 1618813109}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1567027438
 GameObject:
   m_ObjectHideFlags: 0
@@ -2481,6 +2499,26 @@ PrefabInstance:
     - target: {fileID: 3494097717041805283, guid: 5cdcddc29d234424eaa9dedbcc354498, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3907433866923268711, guid: 5cdcddc29d234424eaa9dedbcc354498, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3907433866923268711, guid: 5cdcddc29d234424eaa9dedbcc354498, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 483e0fb3e04afa744ba8913cd3b3cef3, type: 3}
+    - target: {fileID: 3907433866923268711, guid: 5cdcddc29d234424eaa9dedbcc354498, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3907433866923268711, guid: 5cdcddc29d234424eaa9dedbcc354498, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3907433866923268711, guid: 5cdcddc29d234424eaa9dedbcc354498, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4045074253758623879, guid: 5cdcddc29d234424eaa9dedbcc354498, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
