@@ -87,10 +87,8 @@ class Command(BaseCommand):
                         image_response = requests.get(url + image_url)
 
                         if image_response.status_code == 200:
-                            # Open the image using Pillow
                             image = Image.open(ContentFile(image_response.content))
 
-                            # Resize the image
                             resized_image = resize_image(image, 720, 450)
 
                             # Convert the resized image back to a file-like object
@@ -101,7 +99,6 @@ class Command(BaseCommand):
                             image_file.name = 'question_' + str(question.q_uid) + '.jpg'
                             question.q_img.save(image_file.name, image_file)
                             question.save()
-
 
                     except TypeError as e:  # Usuń pytanie, jeśli nie udało się pobrać zdjęcia
                         self.stdout.write(self.style.WARNING(f'ERROR Could not scrape question {question.q_text}: {e}'))
