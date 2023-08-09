@@ -9,7 +9,8 @@ class AnswerSerializer(serializers.ModelSerializer):
     text = serializers.CharField(source='a_text')
     created_at = CustomDateTimeField(source='a_created_at', read_only=True)
     question = serializers.CharField(source='a_question.q_uid')
+    correct = serializers.BooleanField(source='a_correct')
 
     class Meta:
         model = Answer
-        fields = ['uid', 'text', 'created_at', 'question']
+        fields = ['uid', 'text', 'correct', 'created_at', 'question']

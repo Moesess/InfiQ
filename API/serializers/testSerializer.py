@@ -8,7 +8,7 @@ from API.serializers.fields import CustomDateTimeField
 class TestSerializer(serializers.ModelSerializer):
     uid = serializers.UUIDField(source='t_uid', read_only=True)
     testType = serializers.PrimaryKeyRelatedField(source='t_testType', queryset=TestType.objects.all())
-    questions = serializers.PrimaryKeyRelatedField(source='t_questions', many=True, read_only=True)
+    questions = QuestionSerializer(source='t_questions', many=True, read_only=True)
     testResult = serializers.SerializerMethodField()
     created_at = CustomDateTimeField(source='t_created_at', read_only=True)
 

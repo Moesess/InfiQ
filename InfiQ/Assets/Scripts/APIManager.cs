@@ -9,14 +9,15 @@ public class APIManager : MonoBehaviour
     // Add a property to store the authentication token
     public string AuthToken { get; set; }
 
-    public const string QUESTION_URL = "https://4648-109-173-228-222.ngrok-free.app/Questions/";
-    public const string LOGIN_URL = "https://4648-109-173-228-222.ngrok-free.app/login/";
-    public const string ANSWER_URL = "https://4648-109-173-228-222.ngrok-free.app/Answers/";
-    public const string TEST_TYPES_URL = "https://4648-109-173-228-222.ngrok-free.app/TestTypes/";
-    public const string START_SINGLE_QUESTION_URL = "https://4648-109-173-228-222.ngrok-free.app/Tests/random_question/";
-    public const string VALIDATE_SINGLE_QUESTION_URL = "https://4648-109-173-228-222.ngrok-free.app/Tests/random_question_answer/";
-    public const string START_TEST_URL = "https://4648-109-173-228-222.ngrok-free.app/Tests/random_40_question/";
-    public const string VALIDATE_TEST_URL = "https://4648-109-173-228-222.ngrok-free.app/Tests/test_validate/";
+    public const string URL = "https://4648-109-173-228-222.ngrok-free.app";
+    public const string QUESTION_URL = URL + "/Questions/";
+    public const string LOGIN_URL = URL + "/login/";
+    public const string ANSWER_URL = URL + "/Answers/";
+    public const string TEST_TYPES_URL = URL + "/TestTypes/";
+    public const string START_SINGLE_QUESTION_URL = URL + "/Tests/random_question/";
+    public const string VALIDATE_SINGLE_QUESTION_URL = URL + "/Tests/random_question_answer/";
+    public const string START_TEST_URL = URL + "/Tests/random_40_question/";
+    public const string VALIDATE_TEST_URL = URL + "/Tests/test_validate/";
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
