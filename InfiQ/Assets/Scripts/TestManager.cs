@@ -115,7 +115,7 @@ public class TestManager : MonoBehaviour
 
         string json = "{ \"testType\": \"" + sTestType_uid + "\" }";
        
-        StartCoroutine(APIManager.instance.PostRequest(APIManager.START_TEST_URL, json, result =>
+        StartCoroutine(APIManager.instance.PostRequestWithRetry(APIManager.START_TEST_URL, json, result =>
         {
             Debug.Log(result);
         }));

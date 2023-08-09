@@ -79,6 +79,44 @@ public class APIManager : MonoBehaviour
         }
     }
 
+    public IEnumerator PostRequestWithRetry(string url, string json, System.Action<string> callback, int maxRetries = 3)
+    {
+        int attempts = 0;
+
+        while (attempts < maxRetries)
+        {
+            var request = new UnityWebRequest(url, "POST");
+            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+            request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            if (!string.IsNullOrEmpty(APIManager.instance.AuthToken))
+            {
+                request.SetRequestHeader("Authorization", "Bearer " + APIManager.instance.AuthToken);
+            }
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                callback(request.downloadHandler.text);
+                yield break;
+            }
+            else if (request.responseCode == 403 && attempts < maxRetries - 1)
+            {
+                attempts++;
+                yield return new WaitForSeconds(1);
+            }
+            else
+            {
+                Debug.Log(request.error);
+                yield break;
+            }
+        }
+    }
+
+
     public IEnumerator Login(string username, string password, System.Action<string> callback)
     {
         string json = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
