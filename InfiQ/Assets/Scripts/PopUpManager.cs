@@ -41,23 +41,56 @@ public class PopUpManager : MonoBehaviour
         Instantiate(PopUp, PopUpSpawner.position, Quaternion.identity, PopUpSpawner);
     }
 
+    public GameObject ShowPopUp(GameObject PopUp, bool ret)
+    {
+        return Instantiate(PopUp, PopUpSpawner.position, Quaternion.identity, PopUpSpawner);
+    }
+
     public void PrepFinishPopup(string result, List<Question> Questions, List<string>AnswersUIDS)
     {
         TestResultWrapper wrapper = JsonUtility.FromJson<TestResultWrapper>(result);
         TestResult testResult = wrapper.test_result;
 
         // Get finall popup prefab
-        PopUps[2].GetComponent<TestFinishPopup>().TimeValue.GetComponent<TextMeshProUGUI>().text = testResult.duration;
-        PopUps[2].GetComponent<TestFinishPopup>().ScoreValue.GetComponent<TextMeshProUGUI>().text = testResult.score;
-        PopUps[2].GetComponent<TestFinishPopup>().FinalScoreValue.GetComponent<TextMeshProUGUI>().text = testResult.final_score.ToString();
+        GameObject FinalPopUp = ShowPopUp(PopUps[2], false);
+        GameObject IncorrectAnsPrefab = PopUps[2].GetComponent<TestFinishPopup>().IncorrectAnswerPrefab;
 
-        GameObject content = PopUps[2].GetComponent<TestFinishPopup>().IncorrectAnswersContent;
+        FinalPopUp.GetComponent<TestFinishPopup>().TimeValue.GetComponent<TextMeshProUGUI>().text = testResult.duration;
+        FinalPopUp.GetComponent<TestFinishPopup>().ScoreValue.GetComponent<TextMeshProUGUI>().text = testResult.score;
+        FinalPopUp.GetComponent<TestFinishPopup>().FinalScoreValue.GetComponent<TextMeshProUGUI>().text = testResult.final_score.ToString();
+
+        GameObject content = FinalPopUp.GetComponent<TestFinishPopup>().IncorrectAnswersContent;
+        int counter = 0;
 
         foreach(Question question in Questions)
         {
-            
-        }
+            counter++;
+            string userAnswer = "";
+            string correctAnswer = "";
+            for (int i = 0; i < 4; i++)
+            {
+                if (question.answers[i].correct)
+                    correctAnswer = question.answers[i].text;
 
-        ShowPopUp(PopUps[2]);
+                if(question.answers[i].uid == AnswersUIDS[counter-1])
+                    userAnswer = question.answers[i].text;
+            }
+
+            Debug.Log(correctAnswer);
+            Debug.Log(userAnswer);
+
+            if(correctAnswer == userAnswer)
+                continue;
+            
+            IncorrectAnsPrefab.GetComponent<IncorrectAnswer>().QuestionID.GetComponent<TextMeshProUGUI>().text = counter.ToString();
+            IncorrectAnsPrefab.GetComponent<IncorrectAnswer>().QuestionText.GetComponent<TextMeshProUGUI>().text = question.text;
+            IncorrectAnsPrefab.GetComponent<IncorrectAnswer>().UserAnswer.GetComponent<TextMeshProUGUI>().text = userAnswer;
+            IncorrectAnsPrefab.GetComponent<IncorrectAnswer>().CorrectAnswer.GetComponent<TextMeshProUGUI>().text = correctAnswer;
+
+            GameObject IncorrectAnswer = Instantiate(IncorrectAnsPrefab, Vector3.zero, Quaternion.identity);
+            IncorrectAnswer.transform.SetParent(content.transform, false);
+
+        }
+        
     }
 }
