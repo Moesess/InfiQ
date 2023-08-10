@@ -10,6 +10,7 @@ public class APIManager : MonoBehaviour
     public string AuthToken { get; set; }
 
     public const string URL = "https://4648-109-173-228-222.ngrok-free.app";
+    //public const string URL = "http://minecraft.oweb.pl:8000";
     public const string QUESTION_URL = URL + "/Questions/";
     public const string LOGIN_URL = URL + "/login/";
     public const string ANSWER_URL = URL + "/Answers/";
@@ -116,28 +117,5 @@ public class APIManager : MonoBehaviour
             }
         }
     }
-
-
-    public IEnumerator Login(string username, string password, System.Action<string> callback)
-    {
-        string json = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
-        var request = new UnityWebRequest(APIManager.LOGIN_URL, "POST");
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
-
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.Success)
-        {
-            callback(request.downloadHandler.text);
-        }
-        else
-        {
-            Debug.Log(request.error);
-        }
-    }
-
 }
 

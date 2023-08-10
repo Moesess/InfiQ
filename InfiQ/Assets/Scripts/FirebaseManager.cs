@@ -3,10 +3,15 @@ using Firebase.Auth;
 using Google;
 using Firebase;
 using Firebase.Extensions;
+using System.Collections;
+using TMPro;
 
 public class FirebaseManager : MonoBehaviour
 {
     private const string WEB_CLIENT_ID = "844312363775-nf2lgo8lsrn6eev1aelmto602ucalkmv.apps.googleusercontent.com";
+
+    [SerializeField] GameObject Username;
+    [SerializeField] GameObject UsernameText;
 
     private FirebaseAuth auth;
 
@@ -28,6 +33,25 @@ public class FirebaseManager : MonoBehaviour
     {
         FirebaseApp app = FirebaseApp.DefaultInstance;
         auth = FirebaseAuth.DefaultInstance;
+        auth.StateChanged += AuthStateChanged;
+        AuthStateChanged(this, null);
+
+        if (auth.CurrentUser != null)
+        {
+            Username.SetActive(true);
+            UsernameText.GetComponent<TextMeshProUGUI>().text = GetUsername();
+        }
+    }
+
+    void AuthStateChanged(object sender, System.EventArgs eventArgs)
+    {
+        FirebaseAuth auth = FirebaseAuth.DefaultInstance;
+
+        if (auth.CurrentUser != null)
+        {
+            Username.SetActive(true);
+            UsernameText.GetComponent<TextMeshProUGUI>().text = GetUsername();
+        }
     }
 
 
@@ -70,7 +94,7 @@ public class FirebaseManager : MonoBehaviour
         try 
         {
             Credential credential = GoogleAuthProvider.GetCredential(idToken, accessToken);
-            auth.SignInWithCredentialAsync(credential).ContinueWith(task =>
+            auth.SignInWithCredentialAsync(credential).ContinueWithOnMainThread(task =>
             {
                 if (task.IsCanceled)
                 {
@@ -85,6 +109,7 @@ public class FirebaseManager : MonoBehaviour
 
                 FirebaseUser newUser = task.Result;
                 Debug.Log("User signed in successfully" + newUser.DisplayName + " " + newUser.UserId);
+                UsernameText.GetComponent<TextMeshPro>().text = newUser.DisplayName;
 
                 // Retrieve the Firebase token
                 newUser.TokenAsync(true).ContinueWith(tokenTask =>
@@ -109,5 +134,21 @@ public class FirebaseManager : MonoBehaviour
         {
             Debug.LogError(e.Message);
         }
+    }
+
+    public bool IsUserLoggedIn()
+    {
+        if (FirebaseAuth.DefaultInstance != null)
+            return FirebaseAuth.DefaultInstance.CurrentUser != null;
+        
+        return false;
+    }
+
+    public string GetUsername()
+    {
+        if (FirebaseAuth.DefaultInstance != null)
+            return FirebaseAuth.DefaultInstance.CurrentUser.DisplayName;
+
+        return "";
     }
 }

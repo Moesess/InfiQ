@@ -56,7 +56,7 @@ class TestView(viewsets.ModelViewSet):
         # Wypełnienie testu i zapis do bazy
         testResult.tr_isDone = True
         testResult.tr_score = int(submitted_answer.a_correct)
-        testResult.tr_date_end = datetime.datetime.now()
+        testResult.tr_date_end = timezone.now()
         testResult.save()
 
         return Response(
@@ -71,6 +71,7 @@ class TestView(viewsets.ModelViewSet):
     @transaction.atomic
     @action(methods=['post'], detail=False, url_path='random_40_question')
     def random_40_question(self, request) -> Response:
+        # TODO ONLY FOR DEBUG
         if request.user.is_anonymous:
             try:
                 user = User.objects.get(username='user1')

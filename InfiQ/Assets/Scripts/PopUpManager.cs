@@ -93,4 +93,11 @@ public class PopUpManager : MonoBehaviour
         }
         
     }
+
+    public void CreateErrorPopup(string sTitle, string sDesc) 
+    {
+        GameObject ErrorPopup = ShowPopUp(PopUps[3], false);
+        ErrorPopup.GetComponent<ErrorPopUp>().Fill(sTitle, sDesc);
+        //ShowPopUp(ErrorPopup);
+    }
 }
