@@ -3,8 +3,8 @@ using Firebase.Auth;
 using Google;
 using Firebase;
 using Firebase.Extensions;
-using System.Collections;
 using TMPro;
+using System;
 
 public class FirebaseManager : MonoBehaviour
 {
@@ -14,6 +14,7 @@ public class FirebaseManager : MonoBehaviour
     [SerializeField] GameObject UsernameText;
 
     private FirebaseAuth auth;
+    FirebaseUser User;
 
     private void Awake()
     {
@@ -43,7 +44,7 @@ public class FirebaseManager : MonoBehaviour
         }
     }
 
-    void AuthStateChanged(object sender, System.EventArgs eventArgs)
+    void AuthStateChanged(object sender, EventArgs eventArgs)
     {
         FirebaseAuth auth = FirebaseAuth.DefaultInstance;
 
@@ -94,7 +95,7 @@ public class FirebaseManager : MonoBehaviour
         try 
         {
             Credential credential = GoogleAuthProvider.GetCredential(idToken, accessToken);
-            auth.SignInWithCredentialAsync(credential).ContinueWithOnMainThread(task =>
+            auth.SignInWithCredentialAsync(credential).ContinueWith(task =>
             {
                 if (task.IsCanceled)
                 {
@@ -107,12 +108,11 @@ public class FirebaseManager : MonoBehaviour
                     return;
                 }
 
-                FirebaseUser newUser = task.Result;
-                Debug.Log("User signed in successfully" + newUser.DisplayName + " " + newUser.UserId);
-                UsernameText.GetComponent<TextMeshPro>().text = newUser.DisplayName;
+                User = task.Result;
+                //Debug.Log("User signed in successfully" + User.DisplayName + " " + User.UserId);
 
                 // Retrieve the Firebase token
-                newUser.TokenAsync(true).ContinueWith(tokenTask =>
+                User.TokenAsync(true).ContinueWith(tokenTask =>
                 {
                     if (tokenTask.IsCanceled)
                     {
@@ -136,7 +136,7 @@ public class FirebaseManager : MonoBehaviour
         }
     }
 
-    public bool IsUserLoggedIn()
+    public static bool IsUserLoggedIn()
     {
         if (FirebaseAuth.DefaultInstance != null)
             return FirebaseAuth.DefaultInstance.CurrentUser != null;

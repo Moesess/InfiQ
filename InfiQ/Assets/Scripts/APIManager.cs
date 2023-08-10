@@ -9,8 +9,8 @@ public class APIManager : MonoBehaviour
     // Add a property to store the authentication token
     public string AuthToken { get; set; }
 
-    public const string URL = "https://4648-109-173-228-222.ngrok-free.app";
-    //public const string URL = "http://minecraft.oweb.pl:8000";
+    //public const string URL = "https://4648-109-173-228-222.ngrok-free.app";
+    public const string URL = "http://145.239.23.39:8000";
     public const string QUESTION_URL = URL + "/Questions/";
     public const string LOGIN_URL = URL + "/login/";
     public const string ANSWER_URL = URL + "/Answers/";
@@ -105,7 +105,7 @@ public class APIManager : MonoBehaviour
                 callback(request.downloadHandler.text);
                 yield break;
             }
-            else if (request.responseCode == 403 && attempts < maxRetries - 1)
+            else if (request.responseCode != 403 && attempts < maxRetries - 1)
             {
                 attempts++;
                 yield return new WaitForSeconds(1);

@@ -8,7 +8,7 @@ public class PopUpManager : MonoBehaviour
     [SerializeField] Transform PopUpSpawner;
 
     public static PopUpManager instance;
-
+    
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -41,7 +41,7 @@ public class PopUpManager : MonoBehaviour
         Instantiate(PopUp, PopUpSpawner.position, Quaternion.identity, PopUpSpawner);
     }
 
-    public GameObject ShowPopUp(GameObject PopUp, bool ret)
+    public GameObject ShowPopUp(GameObject PopUp, bool bNoPosition)
     {
         return Instantiate(PopUp, PopUpSpawner.position, Quaternion.identity, PopUpSpawner);
     }
@@ -76,9 +76,6 @@ public class PopUpManager : MonoBehaviour
                     userAnswer = question.answers[i].text;
             }
 
-            Debug.Log(correctAnswer);
-            Debug.Log(userAnswer);
-
             if(correctAnswer == userAnswer)
                 continue;
             
@@ -99,5 +96,12 @@ public class PopUpManager : MonoBehaviour
         GameObject ErrorPopup = ShowPopUp(PopUps[3], false);
         ErrorPopup.GetComponent<ErrorPopUp>().Fill(sTitle, sDesc);
         //ShowPopUp(ErrorPopup);
+    }
+
+    public void CreateConfirmationPopup(string sTitle, string sLeft, string sRight)
+    {
+        GameObject ConfirmPopup = ShowPopUp(PopUps[4], true);
+        ConfirmPopup.GetComponent<ConfirmPopup>().Fill(sTitle, sLeft, sRight);
+        ConfirmPopup.transform.SetParent(PopUpSpawner, false);
     }
 }

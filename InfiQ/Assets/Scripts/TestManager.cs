@@ -84,6 +84,9 @@ public class TestValidateData
 
 public class TestManager : MonoBehaviour
 {
+    // TODO ONLY FOR DEBUG
+    private const bool DEBUG_MODE = true;
+
     private TestManager Instance;
 
     [SerializeField]
@@ -337,42 +340,50 @@ public class TestManager : MonoBehaviour
 
     public void StartTest(string sTestType)
     {
-        string sTestType_uid;
-
-        switch (sTestType)
+        if (FirebaseManager.IsUserLoggedIn() || DEBUG_MODE)
         {
-            case "INF.02":
-                sTestType_uid = sInf2_uid;
-                break;
-            case "INF.03":
-                sTestType_uid = sInf3_uid;
-                break;
-            case "INF.04":
-                sTestType_uid = sInf4_uid;
-                break;
-            default:
-                sTestType_uid = "";
-                break;
-        }
 
-        if (sTestType_uid == "") 
-            return;
-        
-        string json = "{ \"testType\": \"" + sTestType_uid + "\" }";
-       
-        StartCoroutine(APIManager.instance.PostRequestWithRetry(APIManager.START_TEST_URL, json, result =>
-        {
-            if (result == null)
-                return;
+            string sTestType_uid;
 
-            if (GenerateQuestions(result))
+            switch (sTestType)
             {
-                MainMenuCanvas.SetActive(false);
-                QuestionCanvas.SetActive(true);
-
-                DisplayQuestion(iCurrentQuestion);
+                case "INF.02":
+                    sTestType_uid = sInf2_uid;
+                    break;
+                case "INF.03":
+                    sTestType_uid = sInf3_uid;
+                    break;
+                case "INF.04":
+                    sTestType_uid = sInf4_uid;
+                    break;
+                default:
+                    sTestType_uid = "";
+                    break;
             }
+
+            if (sTestType_uid == "") 
+                return;
+        
+            string json = "{ \"testType\": \"" + sTestType_uid + "\" }";
+       
+            StartCoroutine(APIManager.instance.PostRequestWithRetry(APIManager.START_TEST_URL, json, result =>
+            {
+                if (result == null)
+                    return;
+
+                if (GenerateQuestions(result))
+                {
+                    MainMenuCanvas.SetActive(false);
+                    QuestionCanvas.SetActive(true);
+
+                    DisplayQuestion(iCurrentQuestion);
+                }
             
-        }));
+            }));
+        }
+        else
+        {
+            PopUpManager.instance.CreateErrorPopup("ERROR", "Nie jesteœ zalogowany! Tylko zalogowani u¿ytkownicy maj¹ dostêp do testów!");
+        }
     }
 }

@@ -9,16 +9,21 @@ public class ExitGame : MonoBehaviour
         // Check if the back button is pressed on Android
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            QuitGame();
+            QuitGame(false);
         }
     }
 
-    public void QuitGame()
+    public static void QuitGame(bool bQuit)
     {
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #else
-            Application.Quit();
-        #endif
+        if (bQuit) 
+        {
+            #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+            #else
+                Application.Quit();
+            #endif
+        }
+        else
+            PopUpManager.instance.CreateConfirmationPopup("Czy na pewno chcesz wyjœæ z gry?", "Wychodzê", "Zostaje!");
     }
 }

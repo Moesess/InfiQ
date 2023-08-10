@@ -368,7 +368,6 @@ RectTransform:
   - {fileID: 1563911145}
   - {fileID: 519420032}
   - {fileID: 447584964}
-  - {fileID: 802075348}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -565,7 +564,7 @@ MonoBehaviour:
       - m_Target: {fileID: 221953626}
         m_TargetAssemblyTypeName: ExitGame, Assembly-CSharp
         m_MethodName: QuitGame
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1745,16 +1744,16 @@ Transform:
   m_GameObject: {fileID: 802075347}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -25.5005, y: 107.33142, z: -1.7950108}
-  m_LocalScale: {x: 0.8205128, y: 0.8205128, z: 0.8205128}
+  m_LocalPosition: {x: 508.92126, y: 1300.8102, z: -2.1876695}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 261536405}
   - {fileID: 1567027439}
   - {fileID: 603530014}
-  - {fileID: 261536405}
   - {fileID: 1470918639}
   - {fileID: 932763444}
-  m_Father: {fileID: 156004850}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &830686628
 GameObject:
@@ -1882,6 +1881,7 @@ MonoBehaviour:
   - {fileID: 3027692954774999612, guid: 61bbbc4142f4fda4cb31b43e72d1c72e, type: 3}
   - {fileID: 4582447357296463559, guid: 5c9160d98595caa4285201ad2ecf780a, type: 3}
   - {fileID: 6094156436975041248, guid: 9ea1b9207e7e14b4a8a824a2e6079172, type: 3}
+  - {fileID: 4700224273791132982, guid: 772ffb1a8f544bc4da465f029d306613, type: 3}
   PopUpSpawner: {fileID: 1563911145}
 --- !u!224 &1008130747 stripped
 RectTransform:
@@ -3021,6 +3021,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -1920
       objectReference: {fileID: 0}
+    - target: {fileID: 6559131780381539196, guid: 5cdcddc29d234424eaa9dedbcc354498, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6910997809839734513, guid: 5cdcddc29d234424eaa9dedbcc354498, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -3715,7 +3719,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3763,4 +3767,5 @@ MonoBehaviour:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 802075348}
   - {fileID: 156004850}
