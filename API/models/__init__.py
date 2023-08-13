@@ -3,6 +3,7 @@ from .question import Question
 from .test import Test
 from .testResult import TestResult
 from .testType import TestType, TEST_TYPES
+from .user import User
 
 __all__ = [
     "TEST_TYPES",
@@ -11,4 +12,5 @@ __all__ = [
     'Test',
     'TestResult',
     'TestType',
+    'User'
 ]

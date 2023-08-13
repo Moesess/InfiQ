@@ -4,6 +4,7 @@ from .testResultView import TestResultView
 from .testTypeView import TestTypeView
 from .testView import TestView
 from .loginView import LoginView
+from .userView import UserView
 
 
 __all__ = [
@@ -13,4 +14,5 @@ __all__ = [
     'TestResultView',
     'TestTypeView',
     'TestView',
+    'UserView'
 ]

@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db import transaction
 from django.utils import timezone
 from rest_framework import viewsets, status
@@ -6,7 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.status import HTTP_401_UNAUTHORIZED
 
-from ..models import Test, Question, Answer, TestType, TestResult
+from ..models import Test, Question, Answer, TestType, TestResult, User
 from ..serializers import TestSerializer, RandomQuestionAnswerSerializer, AnswerSerializer, \
     TestResultSerializer, TestValidateSerializer
 

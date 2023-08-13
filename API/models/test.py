@@ -1,11 +1,11 @@
 import uuid
 
-from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
 from .question import Question
 from .testType import TestType
+from .user import User
 
 
 class Test(models.Model):
