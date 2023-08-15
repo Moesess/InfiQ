@@ -6,16 +6,25 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    [SerializeField] GameObject scoreboardCanvas;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField]
+    GameObject scoreBoard;
 
-    // Update is called once per frame
-    void Update()
+    public void OpenScoreboard()
     {
-        
+        PopulateScoreboard();
+        scoreBoard.SetActive(true);
+    }
+    public void CloseScoreboard()
+    {
+        scoreBoard.SetActive(false);
+        DePopulateScoreboard();
+    }
+    private void PopulateScoreboard()
+    {
+        //TODO
+    }
+    private void DePopulateScoreboard()
+    {
+        //TODO
     }
 }
