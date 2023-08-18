@@ -177,5 +177,6 @@ SITE_ID = 1
 AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
+AUTH_USER_MODEL = 'API.User'
 
 LOGIN_REDIRECT_URL = '/'

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import TestType, Question, Answer, Test, TestResult
+from .models import TestType, Question, Answer, Test, TestResult, User
 
 
 # Register your models here.
@@ -29,3 +29,9 @@ class TestAdmin(admin.ModelAdmin):
 @admin.register(TestResult)
 class TestResultAdmin(admin.ModelAdmin):
     list_display = ('tr_uid', 'tr_test', 'tr_date_start', 'tr_date_end', 'tr_score')
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'u_number_of_tests', 'u_best_score',
+                    'u_best_time', 'u_correct_answers', 'u_all_answers')
