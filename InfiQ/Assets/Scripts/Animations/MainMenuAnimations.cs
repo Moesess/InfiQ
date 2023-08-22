@@ -26,22 +26,22 @@ public class MainMenuAnimations : MonoBehaviour
     IEnumerator DelayedStart()
     {
         yield return null;
-        LeanTween.alphaCanvas(TopMenu.GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeOutSine);
+        LeanTween.alphaCanvas(TopMenu.GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeOutSine).setIgnoreTimeScale(true);
 
         yield return null;
-        LeanTween.alphaCanvas(TestButton1.GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeOutSine);
+        LeanTween.alphaCanvas(TestButton1.GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeOutSine).setIgnoreTimeScale(true);
         SlideInFromLeft(TestButton1);
 
         yield return new WaitForSeconds(.1f);
-        LeanTween.alphaCanvas(TestButton2.GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeOutSine);
+        LeanTween.alphaCanvas(TestButton2.GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeOutSine).setIgnoreTimeScale(true);
         SlideInFromLeft(TestButton2);
 
         yield return new WaitForSeconds(.1f);
-        LeanTween.alphaCanvas(TestButton3.GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeOutSine);
+        LeanTween.alphaCanvas(TestButton3.GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeOutSine).setIgnoreTimeScale(true);
         SlideInFromLeft(TestButton3);
 
         yield return new WaitForSeconds(.1f);
-        LeanTween.alphaCanvas(BottomButtons.GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeOutSine);
+        LeanTween.alphaCanvas(BottomButtons.GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeOutSine).setIgnoreTimeScale(true);
     }
 
     public void SlideInFromLeft(GameObject objToSlide)
@@ -53,7 +53,7 @@ public class MainMenuAnimations : MonoBehaviour
         objToSlide.transform.position = new Vector3(-Screen.width, originalPosition.y, originalPosition.z);
 
         // Slide the object to its original position over a duration of 0.5 seconds
-        LeanTween.move(objToSlide, originalPosition, 1f).setEaseInOutQuad();
+        LeanTween.move(objToSlide, originalPosition, 1f).setEaseInOutQuad().setIgnoreTimeScale(true);
     }
 
     public void SlideOutToRight(GameObject objToSlide)
@@ -62,7 +62,7 @@ public class MainMenuAnimations : MonoBehaviour
         Vector3 targetPosition = new Vector3(Screen.width, objToSlide.transform.position.y, objToSlide.transform.position.z);
 
         // Slide the object to the target position over a duration of 0.5 seconds
-        LeanTween.move(objToSlide, targetPosition, 1f).setEaseInOutQuad();
+        LeanTween.move(objToSlide, targetPosition, 1f).setEaseInOutQuad().setIgnoreTimeScale(true);
     }
 
 }
