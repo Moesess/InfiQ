@@ -282,7 +282,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -100, y: -800}
+  m_SizeDelta: {x: -120, y: -800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7444157454458280043
 CanvasRenderer:
@@ -520,6 +520,7 @@ GameObject:
   - component: {fileID: 4592000433943031121}
   - component: {fileID: 6373278685836200092}
   - component: {fileID: 7802206949076794953}
+  - component: {fileID: 4083565612310910667}
   m_Layer: 5
   m_Name: PopUp
   m_TagString: Untagged
@@ -598,6 +599,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Panel: {fileID: 3750188331196596010}
+  Dialog: {fileID: 1192703779497168759}
+--- !u!225 &4083565612310910667
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3750188331196596010}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 1
 --- !u!1 &5227207388214378018
 GameObject:
   m_ObjectHideFlags: 0
