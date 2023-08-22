@@ -2792,6 +2792,7 @@ GameObject:
   - component: {fileID: 591484574}
   - component: {fileID: 591484576}
   - component: {fileID: 591484577}
+  - component: {fileID: 591484578}
   m_Layer: 0
   m_Name: INF03 Button
   m_TagString: Untagged
@@ -2928,6 +2929,18 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 5, y: -5}
   m_UseGraphicAlpha: 1
+--- !u!225 &591484578
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591484572}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &603530013
 GameObject:
   m_ObjectHideFlags: 0
@@ -3454,6 +3467,7 @@ GameObject:
   - component: {fileID: 686028553}
   - component: {fileID: 686028555}
   - component: {fileID: 686028556}
+  - component: {fileID: 686028557}
   m_Layer: 0
   m_Name: INF02 Button
   m_TagString: Untagged
@@ -3590,6 +3604,18 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   m_EffectDistance: {x: 5, y: -5}
   m_UseGraphicAlpha: 1
+--- !u!225 &686028557
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 686028551}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &716865595
 GameObject:
   m_ObjectHideFlags: 0
@@ -4351,6 +4377,7 @@ GameObject:
   - component: {fileID: 830686629}
   - component: {fileID: 830686632}
   - component: {fileID: 830686631}
+  - component: {fileID: 830686633}
   m_Layer: 0
   m_Name: Bottom Buttons
   m_TagString: Untagged
@@ -4417,6 +4444,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 830686628}
   m_CullTransparentMesh: 1
+--- !u!225 &830686633
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830686628}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &917549822
 GameObject:
   m_ObjectHideFlags: 0
@@ -7006,6 +7045,7 @@ GameObject:
   - component: {fileID: 1504297324}
   - component: {fileID: 1504297327}
   - component: {fileID: 1504297326}
+  - component: {fileID: 1504297328}
   m_Layer: 0
   m_Name: Top Menu
   m_TagString: Untagged
@@ -7074,6 +7114,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1504297323}
   m_CullTransparentMesh: 1
+--- !u!225 &1504297328
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1504297323}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1532313673
 GameObject:
   m_ObjectHideFlags: 0
@@ -8975,6 +9027,7 @@ GameObject:
   - component: {fileID: 1904198903}
   - component: {fileID: 1904198905}
   - component: {fileID: 1904198906}
+  - component: {fileID: 1904198907}
   m_Layer: 0
   m_Name: INF04 Button
   m_TagString: Untagged
@@ -9111,6 +9164,18 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 5, y: -5}
   m_UseGraphicAlpha: 1
+--- !u!225 &1904198907
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1904198901}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1907902668
 GameObject:
   m_ObjectHideFlags: 0
@@ -9823,6 +9888,7 @@ GameObject:
   - component: {fileID: 2051094046}
   - component: {fileID: 2051094045}
   - component: {fileID: 2051094047}
+  - component: {fileID: 2051094048}
   m_Layer: 5
   m_Name: MainMenu
   m_TagString: Untagged
@@ -9916,6 +9982,23 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &2051094048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2051094040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b852a210f58ae7e489ad6016a3d533db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TopMenu: {fileID: 1504297323}
+  TestButton1: {fileID: 686028551}
+  TestButton2: {fileID: 591484572}
+  TestButton3: {fileID: 1904198901}
+  BottomButtons: {fileID: 830686628}
 --- !u!1 &2066754781
 GameObject:
   m_ObjectHideFlags: 0
