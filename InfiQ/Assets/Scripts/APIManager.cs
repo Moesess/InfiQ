@@ -11,6 +11,7 @@ public class APIManager : MonoBehaviour
 
     //public const string URL = "https://4648-109-173-228-222.ngrok-free.app";
     public const string URL = "http://145.239.23.39:8000";
+    public const string EMAIL_URL = URL + "/send-email/";
     public const string QUESTION_URL = URL + "/Questions/";
     public const string LOGIN_URL = URL + "/login/";
     public const string ANSWER_URL = URL + "/Answers/";

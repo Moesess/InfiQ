@@ -22,6 +22,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('login/', views.LoginView, name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('send-email/', views.SendEmailView.as_view(), name='send-email'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

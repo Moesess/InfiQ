@@ -107,4 +107,29 @@ public class PopUpManager : MonoBehaviour
 
         return ConfirmPopup;
     }
+
+    public void CreateSendReportPopup(bool isQuestion)
+    {
+        if (DateTime.Now.ToString("yyyy-MM-dd") != PlayerPrefs.GetString("LastEmailDate", ""))
+        {
+            PlayerPrefs.SetInt("EmailCount", 0);
+        }
+
+        if (PlayerPrefs.GetInt("EmailCount", 0) < 10)
+        {
+            GameObject Popup = ShowPopUp(PopUps[5], true);
+
+            if (isQuestion)
+            {
+                Popup.GetComponent<MailTo>().Subject.readOnly = true;
+                Popup.GetComponent<MailTo>().Subject.interactable = false;
+                
+                Popup.GetComponent<MailTo>().Subject.text = "Zg³oszenie pytania: " + TestManager.Instance.sCurrentQuestionID;
+            }
+        }
+        else
+        {
+            CreateErrorPopup("B£¥D", "Odczekaj trochê przed wysy³aniem kolejnych zg³oszeñ. Pamiêtaj ¿e limit na dzieñ to 10!");
+        }
+    }
 }

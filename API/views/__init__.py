@@ -5,6 +5,7 @@ from .testTypeView import TestTypeView
 from .testView import TestView
 from .loginView import LoginView
 from .userView import UserView
+from .sendEmailView import SendEmailView
 
 
 __all__ = [
@@ -14,5 +15,6 @@ __all__ = [
     'TestResultView',
     'TestTypeView',
     'TestView',
-    'UserView'
+    'UserView',
+    'SendEmailView',
 ]

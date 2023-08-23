@@ -92,7 +92,8 @@ public class TestManager : MonoBehaviour
     [SerializeField]
     private List<Question> Questions = new();
 
-    private int iCurrentQuestion = 0;
+    public int iCurrentQuestion;
+    public string sCurrentQuestionID;
 
     [SerializeField]
     private List<string> AnswersUIDS = new();
@@ -106,7 +107,7 @@ public class TestManager : MonoBehaviour
     GameObject Confirm;
 
     [SerializeField] GameObject QuestionCanvas;
-    [SerializeField] GameObject QuestionID;
+    [SerializeField] public GameObject QuestionID;
     [SerializeField] GameObject QuestionDesc;
     [SerializeField] GameObject AnsA;
     [SerializeField] GameObject AnsB;
@@ -170,6 +171,8 @@ public class TestManager : MonoBehaviour
         ShowImageButton.SetActive(false);
         QuestionImage.enabled = false;
         QuestionCanvas.transform.localScale = Vector3.zero;
+        iCurrentQuestion = 0;
+        sCurrentQuestionID = "";
         StartCoroutine(APIManager.instance.GetRequest(
             APIManager.TEST_TYPES_URL,
             result =>
@@ -214,9 +217,10 @@ public class TestManager : MonoBehaviour
 
         Question question = Questions[index];
         iCurrentQuestion = index;
+        sCurrentQuestionID = Questions[index].id;
 
         // Set the question ID and description
-        QuestionID.GetComponent<TextMeshProUGUI>().text = question.id;
+        QuestionID.GetComponent<TextMeshProUGUI>().text = (index + 1).ToString();
         QuestionDesc.GetComponent<TextMeshProUGUI>().text = question.text;
 
         AnsA.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = question.answers[0].text;
