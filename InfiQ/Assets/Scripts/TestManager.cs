@@ -119,9 +119,17 @@ public class TestManager : MonoBehaviour
     [SerializeField] Color CorrectAnswerColor;
     [SerializeField] Color WrongAnswerColor;
 
-    IEnumerator WaitAndDisplayNextQuestion(int nextQuestionIndex)
+    IEnumerator WaitAndDisplayNextQuestion(int nextQuestionIndex, bool correctAnswer)
     {
+        if (!correctAnswer)
+        {
+            yield return StartCoroutine(Shake(QuestionCanvas));
+            yield return new WaitForSeconds(1.2f);
+        }
+
+        yield return new WaitForSeconds(0.3f);
         yield return StartCoroutine(ScaleDown(QuestionCanvas));
+
         DisplayQuestion(nextQuestionIndex);
     }
 
@@ -161,7 +169,7 @@ public class TestManager : MonoBehaviour
         ReturnToMenu(true);
         ShowImageButton.SetActive(false);
         QuestionImage.enabled = false;
-        QuestionCanvas.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+        QuestionCanvas.transform.localScale = Vector3.zero;
         StartCoroutine(APIManager.instance.GetRequest(
             APIManager.TEST_TYPES_URL,
             result =>
@@ -236,10 +244,27 @@ public class TestManager : MonoBehaviour
 
     public IEnumerator ScaleDown(GameObject objToSlide)
     {
-        Vector3 pos = new(0.75f, 0.75f, 0.75f);
+        Vector3 pos = new(0.95f, 0.95f, 0.95f);
         LeanTween.scale(objToSlide, pos, 0.35f).setEaseInOutQuad().setIgnoreTimeScale(true);
         yield return new WaitForSeconds(0.35f);
     }
+
+    public IEnumerator Shake(GameObject objToShake)
+    {
+        Vector3 originalPosition = objToShake.transform.position;
+        float shakeAmount = 40f;
+        float shakeDuration = 0.1f;
+
+        LeanTween.moveX(objToShake, originalPosition.x - shakeAmount, shakeDuration).setEaseShake();
+        yield return new WaitForSeconds(shakeDuration);
+
+        LeanTween.moveX(objToShake, originalPosition.x + shakeAmount, shakeDuration).setEaseShake();
+        yield return new WaitForSeconds(shakeDuration);
+
+        LeanTween.move(objToShake, originalPosition, shakeDuration).setEaseInOutQuad();
+        yield return new WaitForSeconds(shakeDuration);
+    }
+
 
     private void ValidateTest()
     {
@@ -279,7 +304,7 @@ public class TestManager : MonoBehaviour
         else
         {
             Confirm = PopUpManager.instance.CreateConfirmationPopup(
-                "Czy na pewno chcesz wyjœæ z Testu? \n Test zostanie uniewa¿niony!", "Wychodzê", "Zostaje!", ReturnToMenu, true);
+                "Czy na pewno chcesz wyjœæ? \n Test zostanie uniewa¿niony!", "Wychodzê", "Zostaje!", ReturnToMenu, true);
         }
     }
 
@@ -335,6 +360,8 @@ public class TestManager : MonoBehaviour
 
         AnswersUIDS.Add(question.answers[iAns].uid);
 
+        bool correctAnswer = true;
+
         switch (iAns)
         {
             case 0:
@@ -361,9 +388,13 @@ public class TestManager : MonoBehaviour
             AnsD.GetComponent<Image>().color = CorrectAnswerColor;
 
         if (!question.answers[iAns].correct)
+        {
             selectedAns.GetComponent<Image>().color = WrongAnswerColor;
+            correctAnswer = false;
+            StartCoroutine(Shake(selectedAns));
+        }
 
-        StartCoroutine(WaitAndDisplayNextQuestion(iCurrentQuestion+1));
+        StartCoroutine(WaitAndDisplayNextQuestion(iCurrentQuestion+1, correctAnswer));
     }
 
     public void StartTest(string sTestType)
