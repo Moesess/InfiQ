@@ -115,21 +115,26 @@ public class PopUpManager : MonoBehaviour
             PlayerPrefs.SetInt("EmailCount", 0);
         }
 
-        if (PlayerPrefs.GetInt("EmailCount", 0) < 10)
-        {
-            GameObject Popup = ShowPopUp(PopUps[5], true);
-
-            if (isQuestion)
-            {
-                Popup.GetComponent<MailTo>().Subject.readOnly = true;
-                Popup.GetComponent<MailTo>().Subject.interactable = false;
-                
-                Popup.GetComponent<MailTo>().Subject.text = "Zg³oszenie pytania: " + TestManager.Instance.sCurrentQuestionID;
-            }
-        }
-        else
+        if (!(PlayerPrefs.GetInt("EmailCount", 0) < 10))
         {
             CreateErrorPopup("B£¥D", "Odczekaj trochê przed wysy³aniem kolejnych zg³oszeñ. Pamiêtaj ¿e limit na dzieñ to 10!");
+            return;
+        }
+
+        if (Time.time - PlayerPrefs.GetFloat("LastEmailTime", 0f) < 30f)
+        {
+            CreateErrorPopup("B£¥D", "Odczekaj trochê przed wys³aniem kolejnego zg³oszenia.");
+            return;
+        }
+
+        GameObject Popup = ShowPopUp(PopUps[5], true);
+
+        if (isQuestion)
+        {
+            Popup.GetComponent<MailTo>().Subject.readOnly = true;
+            Popup.GetComponent<MailTo>().Subject.interactable = false;
+                
+            Popup.GetComponent<MailTo>().Subject.text = "Zg³oszenie pytania: " + TestManager.Instance.sCurrentQuestionID;
         }
     }
 }

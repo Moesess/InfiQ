@@ -14,7 +14,7 @@ public class FirebaseManager : MonoBehaviour
     [SerializeField] GameObject UsernameText;
 
     private FirebaseAuth auth;
-    FirebaseUser User;
+    public FirebaseUser User;
 
     private void Awake()
     {
