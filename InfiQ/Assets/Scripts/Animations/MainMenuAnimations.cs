@@ -53,7 +53,7 @@ public class MainMenuAnimations : MonoBehaviour
         objToSlide.transform.position = new Vector3(-Screen.width, originalPosition.y, originalPosition.z);
 
         // Slide the object to its original position over a duration of 0.5 seconds
-        LeanTween.move(objToSlide, originalPosition, 1f).setEaseInOutQuad().setIgnoreTimeScale(true);
+        LeanTween.move(objToSlide, originalPosition, 1f).setEaseOutBounce().setIgnoreTimeScale(true);
     }
 
     public void SlideOutToRight(GameObject objToSlide)
@@ -62,7 +62,7 @@ public class MainMenuAnimations : MonoBehaviour
         Vector3 targetPosition = new Vector3(Screen.width, objToSlide.transform.position.y, objToSlide.transform.position.z);
 
         // Slide the object to the target position over a duration of 0.5 seconds
-        LeanTween.move(objToSlide, targetPosition, 1f).setEaseInOutQuad().setIgnoreTimeScale(true);
+        LeanTween.move(objToSlide, targetPosition, 1f).setEaseOutBounce().setIgnoreTimeScale(true);
     }
 
 }

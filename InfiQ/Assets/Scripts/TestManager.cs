@@ -1,9 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -87,7 +87,7 @@ public class TestManager : MonoBehaviour
     // TODO ONLY FOR DEBUG
     private const bool DEBUG_MODE = true;
 
-    private TestManager Instance;
+    public static TestManager Instance;
 
     [SerializeField]
     private List<Question> Questions = new();
@@ -102,6 +102,8 @@ public class TestManager : MonoBehaviour
     private string sInf2_uid;
     private string sInf3_uid;
     private string sInf4_uid;
+
+    GameObject Confirm;
 
     [SerializeField] GameObject QuestionCanvas;
     [SerializeField] GameObject QuestionID;
@@ -119,7 +121,7 @@ public class TestManager : MonoBehaviour
 
     IEnumerator WaitAndDisplayNextQuestion(int nextQuestionIndex)
     {
-        yield return new WaitForSeconds(1); // Wait for 3 seconds
+        yield return StartCoroutine(ScaleDown(QuestionCanvas));
         DisplayQuestion(nextQuestionIndex);
     }
 
@@ -143,6 +145,7 @@ public class TestManager : MonoBehaviour
     {
         if (Instance == null)
         {
+            Confirm = null;
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
@@ -155,10 +158,10 @@ public class TestManager : MonoBehaviour
 
     void Start()
     {
-        ReturnToMenu();
+        ReturnToMenu(true);
         ShowImageButton.SetActive(false);
         QuestionImage.enabled = false;
-
+        QuestionCanvas.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
         StartCoroutine(APIManager.instance.GetRequest(
             APIManager.TEST_TYPES_URL,
             result =>
@@ -186,7 +189,8 @@ public class TestManager : MonoBehaviour
 
     private void DisplayQuestion(int index)
     {
-
+        StartCoroutine(ScaleUp(QuestionCanvas));
+     
         if (index < 0) 
         {
             return;
@@ -194,7 +198,7 @@ public class TestManager : MonoBehaviour
         if (index >= Questions.Count)
         {
             ValidateTest();
-            ReturnToMenu();
+            ReturnToMenu(true);
             return;
         }
 
@@ -224,6 +228,19 @@ public class TestManager : MonoBehaviour
         }
     }
 
+    public IEnumerator ScaleUp(GameObject objToSlide)
+    {
+        LeanTween.scale(objToSlide, Vector3.one, 0.35f).setEaseInOutQuad().setIgnoreTimeScale(true);
+        yield return new WaitForSeconds(0.35f);
+    }
+
+    public IEnumerator ScaleDown(GameObject objToSlide)
+    {
+        Vector3 pos = new(0.75f, 0.75f, 0.75f);
+        LeanTween.scale(objToSlide, pos, 0.35f).setEaseInOutQuad().setIgnoreTimeScale(true);
+        yield return new WaitForSeconds(0.35f);
+    }
+
     private void ValidateTest()
     {
         string json = "{ \"test_uid\": \"" + sCurrentTest + "\", \"answers\": {";
@@ -249,10 +266,21 @@ public class TestManager : MonoBehaviour
         }));
     }
 
-    public void ReturnToMenu()
+    public void ReturnToMenu(bool bQuit)
     {
-        MainMenuCanvas.SetActive(true);
-        QuestionCanvas.SetActive(false);
+        if(bQuit)
+        {
+            MainMenuCanvas.SetActive(true);
+            QuestionCanvas.SetActive(false);
+
+            if(Confirm != null)
+                Confirm.GetComponent<ConfirmPopup>().Close();
+        }
+        else
+        {
+            Confirm = PopUpManager.instance.CreateConfirmationPopup(
+                "Czy na pewno chcesz wyjœæ z Testu? \n Test zostanie uniewa¿niony!", "Wychodzê", "Zostaje!", ReturnToMenu, true);
+        }
     }
 
     bool GenerateQuestions(string result)

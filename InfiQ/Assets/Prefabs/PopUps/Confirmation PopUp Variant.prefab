@@ -137,9 +137,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7955617864308083159}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ConfirmPopup, Assembly-CSharp
-        m_MethodName: ConfirmQuit
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -770,6 +770,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Panel: {fileID: 4700224273791132982}
+  Dialog: {fileID: 7330875841230230891}
   TitleText: {fileID: 4609519567362604304}
   LeftButtonText: {fileID: 5736515909990725286}
   RightButtonText: {fileID: 3926379468657844834}
+  RightButton: {fileID: 1464405475844398844}
+--- !u!1 &7330875841230230891 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1192703779497168759, guid: d451ebeab1dd54a42b4d4a91fef36c04, type: 3}
+  m_PrefabInstance: {fileID: 8444765487706184220}
+  m_PrefabAsset: {fileID: 0}

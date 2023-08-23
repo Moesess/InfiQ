@@ -8,8 +8,8 @@ public class PopUp : MonoBehaviour
     public void Close()
     {
         CanvasGroup panelGroup = Panel.GetComponent<CanvasGroup>();
-        LeanTween.scale(Dialog, Vector3.zero, 0.5f).setEaseInElastic().setIgnoreTimeScale(true).setOnComplete(
-            () => LeanTween.alphaCanvas(panelGroup, 0f, 0.5f).setEase(LeanTweenType.easeOutSine).setIgnoreTimeScale(true).setOnComplete(() => Destroy(Panel))
+        LeanTween.scale(Dialog, Vector3.zero, 0.35f).setEaseInCubic().setIgnoreTimeScale(true).setOnComplete(
+            () => LeanTween.alphaCanvas(panelGroup, 0f, 0.2f).setEase(LeanTweenType.easeOutSine).setIgnoreTimeScale(true).setOnComplete(() => Destroy(Panel))
         );
         
     }
@@ -20,8 +20,8 @@ public class PopUp : MonoBehaviour
         panelGroup.alpha = 0;
         Dialog.transform.localScale = Vector3.zero;
 
-        LeanTween.alphaCanvas(panelGroup, 1f, 0.5f).setEase(LeanTweenType.easeOutSine).setIgnoreTimeScale(true).setOnComplete(
-            () => LeanTween.scale(Dialog, Vector3.one, 0.5f).setEaseOutElastic().setIgnoreTimeScale(true)
+        LeanTween.alphaCanvas(panelGroup, 1f, 0.2f).setEase(LeanTweenType.easeOutSine).setIgnoreTimeScale(true).setOnComplete(
+            () => LeanTween.scale(Dialog, Vector3.one, 0.3f).setEaseOutCubic().setIgnoreTimeScale(true)
         );
     }
 }

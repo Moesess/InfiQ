@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,6 +25,6 @@ public class ExitGame : MonoBehaviour
             #endif
         }
         else
-            PopUpManager.instance.CreateConfirmationPopup("Czy na pewno chcesz wyjœæ z gry?", "Wychodzê", "Zostaje!");
+            PopUpManager.instance.CreateConfirmationPopup("Czy na pewno chcesz wyjœæ z gry?", "Wychodzê", "Zostaje!", QuitGame, true);
     }
 }

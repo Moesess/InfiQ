@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -98,10 +99,12 @@ public class PopUpManager : MonoBehaviour
         //ShowPopUp(ErrorPopup);
     }
 
-    public void CreateConfirmationPopup(string sTitle, string sLeft, string sRight)
+    public GameObject CreateConfirmationPopup(string sTitle, string sLeft, string sRight, Action<bool> buttonAction, bool bAction)
     {
         GameObject ConfirmPopup = ShowPopUp(PopUps[4], true);
-        ConfirmPopup.GetComponent<ConfirmPopup>().Fill(sTitle, sLeft, sRight);
+        ConfirmPopup.GetComponent<ConfirmPopup>().Fill(sTitle, sLeft, sRight, buttonAction, bAction);
         ConfirmPopup.transform.SetParent(PopUpSpawner, false);
+
+        return ConfirmPopup;
     }
 }
