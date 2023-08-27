@@ -120,15 +120,15 @@ class TestView(viewsets.ModelViewSet):
         with transaction.atomic():
             testResult = TestResult.objects.select_related('tr_test').get(tr_test=test)
             testResult.tr_isDone = True
-            testResult.tr_score = score
             testResult.tr_date_end = timezone.now()
+            testResult.tr_score = score
+            testResult.tr_final_score = testResult.calculate_score
             testResult.save()
 
             # Uzupełnienie statystyk użytkownika
-            final_score = testResult.calculate_score
             user = request.user
             user.u_number_of_tests += 1
-            user.u_best_score = max(user.u_best_score, final_score)
+            user.u_best_score = max(user.u_best_score, testResult.tr_final_score)
             user.u_correct_answers += score
             user.u_all_answers += test.t_questions.count()
             if testResult.duration and (not user.u_best_time or testResult.duration < user.u_best_time):

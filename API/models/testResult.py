@@ -23,7 +23,8 @@ class TestResult(models.Model):
     tr_test = models.ForeignKey(Test, on_delete=models.CASCADE, verbose_name="Test")
     tr_date_start = models.DateTimeField(verbose_name="Start date", default=timezone.now)
     tr_date_end = models.DateTimeField(null=True, verbose_name="End date")
-    tr_score = models.IntegerField(verbose_name="Score")
+    tr_score = models.IntegerField(verbose_name="Score", default=0)
+    tr_final_score = models.IntegerField(verbose_name="Final Score", default=0)
     tr_isDone = models.BooleanField(default=False)
 
     class Meta:
@@ -39,8 +40,10 @@ class TestResult(models.Model):
 
     @property
     def calculate_score(self):
-        score = self.tr_score * 1000 / self.duration.seconds
-        return score
+        if self.duration:
+            score = self.tr_score * 1000 / self.duration.seconds
+            return score
+        return 0
 
     def __str__(self):
         return f"{self.tr_date_start}: {self.tr_test.t_testType.tt_name} - {self.tr_score}"

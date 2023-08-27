@@ -6,6 +6,7 @@ from API.serializers.fields import SecondsDurationField
 
 class UserSerializer(serializers.ModelSerializer):
 
+    uid = serializers.UUIDField(source='u_uid', read_only=True)
     name = serializers.CharField(source='username', read_only=True)
     number_of_tests = serializers.IntegerField(source='u_number_of_tests')
     best_score = serializers.IntegerField(source='u_best_score')
@@ -16,4 +17,5 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['name', 'number_of_tests', 'best_score', 'best_time', 'correct_answers', 'all_answers', 'accuracy']
+        fields = ['uid', 'name', 'number_of_tests',
+                  'best_score', 'best_time', 'correct_answers', 'all_answers', 'accuracy']
