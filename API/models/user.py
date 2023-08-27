@@ -17,7 +17,7 @@ class User(AbstractUser):
     """
     u_number_of_tests = models.PositiveIntegerField(default=0, verbose_name="Number of tests")
     u_best_score = models.IntegerField(default=0, verbose_name="Best score")
-    u_best_time = models.DurationField(verbose_name="Best time")
+    u_best_time = models.DurationField(null=True, blank=True, verbose_name="Best time")
     u_correct_answers = models.PositiveIntegerField(default=0, verbose_name="Correct answers")
     u_all_answers = models.PositiveIntegerField(default=0, verbose_name="All answers")
 
