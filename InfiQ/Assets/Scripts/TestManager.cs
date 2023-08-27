@@ -106,6 +106,9 @@ public class TestManager : MonoBehaviour
 
     GameObject Confirm;
 
+    [SerializeField] GameObject INF2Btn;
+    [SerializeField] GameObject INF3Btn;
+    [SerializeField] GameObject INF4Btn;
     [SerializeField] GameObject QuestionCanvas;
     [SerializeField] public GameObject QuestionID;
     [SerializeField] GameObject QuestionDesc;
@@ -403,6 +406,10 @@ public class TestManager : MonoBehaviour
 
     public void StartTest(string sTestType)
     {
+        INF2Btn.SetActive(false);
+        INF3Btn.SetActive(false);
+        INF4Btn.SetActive(false);
+
         if (FirebaseManager.IsUserLoggedIn() || DEBUG_MODE)
         {
 
@@ -443,6 +450,10 @@ public class TestManager : MonoBehaviour
                 }
             
             }));
+
+            INF2Btn.SetActive(true);
+            INF3Btn.SetActive(true);
+            INF4Btn.SetActive(true);
         }
         else
         {

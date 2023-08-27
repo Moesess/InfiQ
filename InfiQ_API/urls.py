@@ -3,7 +3,6 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from django.contrib.auth import views as auth_views
 
 from API import views
 
@@ -19,9 +18,6 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
-    path('accounts/', include('allauth.urls')),
-    path('login/', views.LoginView, name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('send-email/', views.SendEmailView.as_view(), name='send-email'),
 ]
 

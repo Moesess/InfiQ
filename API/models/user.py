@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
@@ -15,9 +17,10 @@ class User(AbstractUser):
     all_answers - The sum of all answers given by user in all of his tests
     accuracy - the ratio of correct answers to all answers given by the user in all his tests
     """
+    u_uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True, verbose_name="UID")
     u_number_of_tests = models.PositiveIntegerField(default=0, verbose_name="Number of tests")
     u_best_score = models.IntegerField(default=0, verbose_name="Best score")
-    u_best_time = models.DurationField(verbose_name="Best time")
+    u_best_time = models.DurationField(null=True, blank=True, verbose_name="Best time")
     u_correct_answers = models.PositiveIntegerField(default=0, verbose_name="Correct answers")
     u_all_answers = models.PositiveIntegerField(default=0, verbose_name="All answers")
 

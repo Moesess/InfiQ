@@ -5,6 +5,7 @@ from .testSerializer import TestSerializer
 from .testTypeSerializer import TestTypeSerializer
 from .actionSerializers import RandomQuestionAnswerSerializer
 from .actionSerializers import TestValidateSerializer
+from .actionSerializers import TopScoreUserSerializer
 from .userSerializer import UserSerializer
 
 __all__ = [
@@ -15,5 +16,6 @@ __all__ = [
     'TestResultSerializer',
     'TestSerializer',
     'TestTypeSerializer',
+    'TopScoreUserSerializer',
     'UserSerializer'
 ]

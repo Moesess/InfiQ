@@ -2989,6 +2989,9 @@ MonoBehaviour:
   iCurrentQuestion: 0
   sCurrentQuestionID: 
   AnswersUIDS: []
+  INF2Btn: {fileID: 686028551}
+  INF3Btn: {fileID: 591484572}
+  INF4Btn: {fileID: 1904198901}
   QuestionCanvas: {fileID: 1618813110}
   QuestionID: {fileID: 1618813116}
   QuestionDesc: {fileID: 1618813115}
