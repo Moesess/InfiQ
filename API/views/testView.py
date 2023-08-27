@@ -124,6 +124,17 @@ class TestView(viewsets.ModelViewSet):
             testResult.tr_date_end = timezone.now()
             testResult.save()
 
+            # Uzupełnienie statystyk użytkownika
+            final_score = testResult.calculate_score
+            user = request.user
+            user.u_number_of_tests += 1
+            user.u_best_score = max(user.u_best_score, final_score)
+            user.u_correct_answers += score
+            user.u_all_answers += test.t_questions.count()
+            if testResult.duration and (not user.u_best_time or testResult.duration < user.u_best_time):
+                user.u_best_time = testResult.duration
+            user.save()
+
         testResultSerializer = TestResultSerializer(testResult)
 
         return Response({'test_result': testResultSerializer.data}, status=status.HTTP_200_OK)

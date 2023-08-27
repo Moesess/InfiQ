@@ -13,7 +13,7 @@ class UserView(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['GET'])
     def top_scores(self, request):
-        top_results = TestResult.objects.values('tr_test__t_user').annotate(
-            best_score=Max('tr_score')).order_by('-best_score')[:100]
-
-        return Response(top_results)
+        # Pobierz 100 użytkowników o najwyższym wyniku
+        top_users = User.objects.order_by('-u_best_score')[:100]
+        serialized_users = UserSerializer(top_users, many=True)
+        return Response(serialized_users.data)
