@@ -20,6 +20,7 @@ public class APIManager : MonoBehaviour
     public const string VALIDATE_SINGLE_QUESTION_URL = URL + "/Tests/random_question_answer/";
     public const string START_TEST_URL = URL + "/Tests/random_40_question/";
     public const string VALIDATE_TEST_URL = URL + "/Tests/test_validate/";
+    public const string USERS_URL = URL + "/Users";
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
