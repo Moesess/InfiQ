@@ -1,8 +1,7 @@
 from rest_framework import serializers
 
 from API.models import TestResult
-from API.serializers.fields import CustomDateTimeField
-from API.serializers.fields import DurationField
+from API.serializers.fields import CustomDateTimeField, SecondsDurationField
 from API.serializers.fields import FinalScoreField
 
 
@@ -15,7 +14,7 @@ class TestResultSerializer(serializers.ModelSerializer):
     date_start = CustomDateTimeField(source='tr_date_start')
     date_end = CustomDateTimeField(source='tr_date_end')
     isDone = serializers.BooleanField(source='tr_isDone')
-    duration = DurationField()
+    duration = SecondsDurationField()
 
     class Meta:
         model = TestResult
