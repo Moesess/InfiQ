@@ -4,6 +4,7 @@ from firebase_admin import auth
 
 from API.models.user import User
 
+
 class FirebaseAuthentication(BaseAuthentication):
     def authenticate(self, request):
         auth_header = request.headers.get('Authorization')
@@ -25,6 +26,6 @@ class FirebaseAuthentication(BaseAuthentication):
                 user.username = decoded_token.get('name', '')
                 user.save()
 
-            return user, None
+            return user, user.u_uid
         except Exception as e:
-            raise AuthenticationFailed('Invalid Firebase token')
+            raise AuthenticationFailed(f'Invalid Firebase token {e}')
