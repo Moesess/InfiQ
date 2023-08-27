@@ -5,5 +5,5 @@ from ..serializers import UserSerializer
 
 
 class UserView(viewsets.ModelViewSet):
-    queryset = User.objects.all().order_by('-best_score')
+    queryset = User.objects.all()
     serializer_class = UserSerializer

@@ -117,13 +117,13 @@ public class PopUpManager : MonoBehaviour
 
         if (!(PlayerPrefs.GetInt("EmailCount", 0) < 10))
         {
-            CreateErrorPopup("Bï¿½ï¿½D", "Odczekaj trochï¿½ przed wysyï¿½aniem kolejnych zgï¿½oszeï¿½. Pamiï¿½taj ï¿½e limit na dzieï¿½ to 10!");
+            CreateErrorPopup("B£¥D", "Odczekaj trochê przed wysy³aniem kolejnych zg³oszeñ. Pamiêtaj ¿e limit na dzieñ to 10!");
             return;
         }
 
         if (Time.time - PlayerPrefs.GetFloat("LastEmailTime", 0f) < 30f)
         {
-            CreateErrorPopup("Bï¿½ï¿½D", "Odczekaj trochï¿½ przed wysï¿½aniem kolejnego zgï¿½oszenia.");
+            CreateErrorPopup("B£¥D", "Odczekaj trochê przed wys³aniem kolejnego zg³oszenia.");
             return;
         }
 
@@ -134,12 +134,7 @@ public class PopUpManager : MonoBehaviour
             Popup.GetComponent<MailTo>().Subject.readOnly = true;
             Popup.GetComponent<MailTo>().Subject.interactable = false;
                 
-            Popup.GetComponent<MailTo>().Subject.text = "Zgï¿½oszenie pytania: " + TestManager.Instance.sCurrentQuestionID;
+            Popup.GetComponent<MailTo>().Subject.text = "Zg³oszenie pytania: " + TestManager.Instance.sCurrentQuestionID;
         }
-    }
-
-    public void PrepScoreboardPopUp(string result)
-    {
-        
     }
 }
