@@ -12,8 +12,13 @@ class UserView(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
     def list(self, request, *args, **kwargs):
-        print(request.auth)
-        return super().list(request, *args, **kwargs)
+        response = super().list(request, *args, **kwargs)
+        data = {
+            'auth': request.auth,
+            'results': response.data
+        }
+        response.data = data
+        return response
 
     @action(detail=False, methods=['GET'])
     def top_scores(self, request):
