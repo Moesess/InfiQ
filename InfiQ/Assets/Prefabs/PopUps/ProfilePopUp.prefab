@@ -2078,10 +2078,47 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8168233516431330134, guid: d451ebeab1dd54a42b4d4a91fef36c04, type: 3}
       insertIndex: -1
       addedObject: {fileID: 756811294306378378}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3750188331196596010, guid: d451ebeab1dd54a42b4d4a91fef36c04, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 820347293135555454}
   m_SourcePrefab: {fileID: 100100000, guid: d451ebeab1dd54a42b4d4a91fef36c04, type: 3}
+--- !u!114 &42505175543979608 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5389006550518507276, guid: d451ebeab1dd54a42b4d4a91fef36c04, type: 3}
+  m_PrefabInstance: {fileID: 5358890879228754260}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &4253086655630995970 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8168233516431330134, guid: d451ebeab1dd54a42b4d4a91fef36c04, type: 3}
   m_PrefabInstance: {fileID: 5358890879228754260}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &9103396310203696766 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3750188331196596010, guid: d451ebeab1dd54a42b4d4a91fef36c04, type: 3}
+  m_PrefabInstance: {fileID: 5358890879228754260}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &820347293135555454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9103396310203696766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bcb6107bfcc0478ea961abe414dfcd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nickName: {fileID: 42505175543979608}
+  avatar: {fileID: 3743940665736788919}
+  completedTests: {fileID: 2225048435256670762}
+  allAnswers: {fileID: 2575690303028074453}
+  correctAnswers: {fileID: 7568350358991698145}
+  accuracy: {fileID: 7661093200102029224}
