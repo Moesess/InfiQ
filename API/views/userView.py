@@ -1,4 +1,4 @@
-from django.db.models import F, Max, OuterRef, Subquery
+from django.db.models import F, OuterRef, Subquery
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -8,7 +8,7 @@ from ..serializers import UserSerializer, TopScoreUserSerializer
 
 
 class UserView(viewsets.ModelViewSet):
-    queryset = User.objects.all().order_by('-best_score')
+    queryset = User.objects.all().order_by('-u_best_score')
     serializer_class = UserSerializer
 
     def list(self, request, *args, **kwargs):
@@ -36,7 +36,7 @@ class UserView(viewsets.ModelViewSet):
         top_users = User.objects.annotate(
             best_score=Subquery(best_scores.values('tr_final_score')[:1]),
             duration=Subquery(best_scores.values('duration')[:1])
-        ).order_by('-best_score')[:100]
+        ).order_by('-u_best_score')[:100]
 
         serialized_users = TopScoreUserSerializer(top_users, many=True)
 
