@@ -30,6 +30,14 @@ public class FirebaseManager : MonoBehaviour
         });
     }
 
+    private void Start()
+    {
+        if (!IsUserLoggedIn())
+        {
+            UsernameText.GetComponent<TextMeshProUGUI>().text = "Niezalogowany";
+        }
+    }
+
     private void InitializeFirebase()
     {
         FirebaseApp app = FirebaseApp.DefaultInstance;
@@ -48,6 +56,20 @@ public class FirebaseManager : MonoBehaviour
     {
         FirebaseAuth auth = FirebaseAuth.DefaultInstance;
 
+        if (auth.CurrentUser != User)
+        {
+            bool signedIn = User != auth.CurrentUser && auth.CurrentUser != null;
+            if (!signedIn && User != null)
+            {
+                Debug.Log("Signed out " + User.UserId);
+            }
+            User = auth.CurrentUser;
+            if (signedIn)
+            {
+                Debug.Log("Signed in " + User.UserId);
+            }
+        }
+
         if (auth.CurrentUser != null)
         {
             Username.SetActive(true);
@@ -55,6 +77,12 @@ public class FirebaseManager : MonoBehaviour
         }
     }
 
+    void OnDestroy()
+    {
+        UsernameText.GetComponent<TextMeshProUGUI>().text = "Niezalogowany";
+        auth.StateChanged -= AuthStateChanged;
+        auth = null;
+    }
 
     public void SignInWithGoogle()
     {
