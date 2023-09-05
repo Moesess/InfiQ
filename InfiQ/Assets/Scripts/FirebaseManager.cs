@@ -5,6 +5,14 @@ using Firebase;
 using Firebase.Extensions;
 using TMPro;
 using System;
+using static ScoreManager;
+
+[System.Serializable]
+public class Response
+{
+    public string auth;
+    public string results;
+}
 
 public class FirebaseManager : MonoBehaviour
 {
@@ -35,6 +43,7 @@ public class FirebaseManager : MonoBehaviour
         if (!IsUserLoggedIn())
         {
             UsernameText.GetComponent<TextMeshProUGUI>().text = "Niezalogowany";
+            SignInWithGoogle();
         }
     }
 
@@ -178,5 +187,19 @@ public class FirebaseManager : MonoBehaviour
             return FirebaseAuth.DefaultInstance.CurrentUser.DisplayName;
 
         return "";
+    }
+
+    public void GetUserUID(Action<string> callback)
+    {
+        StartCoroutine(APIManager.instance.GetRequest(APIManager.USERS_URL,
+            result =>
+            {
+                if (result == null)
+                    return;
+                Debug.Log(result);
+                string auth = JsonUtility.FromJson<Response>(result).auth;
+                callback?.Invoke(auth);
+            }
+            ));
     }
 }
