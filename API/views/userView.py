@@ -8,7 +8,7 @@ from ..serializers import UserSerializer, TopScoreUserSerializer
 
 
 class UserView(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = User.objects.all().order_by('-best_score')
     serializer_class = UserSerializer
 
     def list(self, request, *args, **kwargs):
