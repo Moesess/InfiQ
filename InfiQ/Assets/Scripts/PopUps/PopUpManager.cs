@@ -143,4 +143,10 @@ public class PopUpManager : MonoBehaviour
         GameObject scoreBoard = ShowPopUp(PopUps[6], false);
         scoreBoard.GetComponent<ScoreManager>().PopulateScoreboard("INF.02");
     }
+
+    public void PrepProfilePopUp()
+    {
+        
+        GameObject profilePopUp = ShowPopUp(PopUps[7], false);
+    }
 }
