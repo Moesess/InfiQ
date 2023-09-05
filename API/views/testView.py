@@ -1,5 +1,7 @@
 from django.db import transaction
 from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django_ratelimit.decorators import ratelimit
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -10,6 +12,7 @@ from ..serializers import TestSerializer, RandomQuestionAnswerSerializer, Answer
     TestResultSerializer, TestValidateSerializer
 
 
+@method_decorator(ratelimit(key='ip', rate='1/s', method='GET', block=True), name='dispatch')
 class TestView(viewsets.ModelViewSet):
     queryset = Test.objects.all().prefetch_related('testresult_set')
     serializer_class = TestSerializer

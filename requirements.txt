@@ -8,4 +8,5 @@ Pillow==10.0.0
 requests==2.31.0
 beautifulsoup4~=4.12.2
 django-allauth~=0.54.0
+django_ratelimit~=4.1.0
 firebase-admin==6.2.0

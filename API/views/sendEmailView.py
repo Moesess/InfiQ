@@ -1,9 +1,12 @@
+from django.utils.decorators import method_decorator
+from django_ratelimit.decorators import ratelimit
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.core.mail import send_mail
 
 
+@method_decorator(ratelimit(key='ip', rate='2/s', method='GET', block=True), name='dispatch')
 class SendEmailView(APIView):
     def post(self, request):
         subject = request.data.get('subject')
