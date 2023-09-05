@@ -140,6 +140,7 @@ public class PopUpManager : MonoBehaviour
 
     public void PrepScoreboardPopUp(string result)
     {
-        
+        GameObject scoreBoard = ShowPopUp(PopUps[6], false);
+        scoreBoard.GetComponent<ScoreManager>().PopulateScoreboard("INF.02");
     }
 }
