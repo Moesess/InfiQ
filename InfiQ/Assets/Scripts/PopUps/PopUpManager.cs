@@ -8,6 +8,15 @@ public class PopUpManager : MonoBehaviour
     [SerializeField] public List<GameObject> PopUps = new List<GameObject>();
     [SerializeField] Transform PopUpSpawner;
 
+    static GameObject POPUP;
+    static GameObject WELCOMEPOPUP;
+    static GameObject TESTFINISHPOPUP;
+    static GameObject ERRORPOPUP;
+    static GameObject CONFIRMATIONPOPUP;
+    static GameObject SENDREPORTPOPUP;
+    static GameObject SCOREBOARDPOPUP;
+    static GameObject PROFILEPOPUP;
+
     public static PopUpManager instance;
     
     void Awake()
@@ -26,15 +35,24 @@ public class PopUpManager : MonoBehaviour
 
     private void Start()
     {
+        POPUP = PopUps[0];
+        WELCOMEPOPUP = PopUps[1];
+        TESTFINISHPOPUP = PopUps[2];
+        ERRORPOPUP = PopUps[3];
+        CONFIRMATIONPOPUP = PopUps[4];
+        SENDREPORTPOPUP = PopUps[5];
+        SCOREBOARDPOPUP = PopUps[6];
+        PROFILEPOPUP = PopUps[7];
+
         if (!PlayerPrefs.HasKey("WelcomePopupShown"))
         {
-            ShowPopUp(PopUps[1]);
+            ShowPopUp(WELCOMEPOPUP);
             PlayerPrefs.SetInt("WelcomePopupShown", 1);
             PlayerPrefs.Save();
 
         }
         // ONLY FOR DEBUG, DELETE IN PROD
-        //PlayerPrefs.DeleteKey("WelcomePopupShown"); 
+        //PlayerPrefs.DeleteKey("WelcomePopupShown");
     }
 
     public void ShowPopUp(GameObject PopUp)
@@ -53,8 +71,8 @@ public class PopUpManager : MonoBehaviour
         TestResult testResult = wrapper.test_result;
 
         // Get finall popup prefab
-        GameObject FinalPopUp = ShowPopUp(PopUps[2], false);
-        GameObject IncorrectAnsPrefab = PopUps[2].GetComponent<TestFinishPopup>().IncorrectAnswerPrefab;
+        GameObject FinalPopUp = ShowPopUp(TESTFINISHPOPUP, false);
+        GameObject IncorrectAnsPrefab = TESTFINISHPOPUP.GetComponent<TestFinishPopup>().IncorrectAnswerPrefab;
 
         FinalPopUp.GetComponent<TestFinishPopup>().TimeValue.GetComponent<TextMeshProUGUI>().text = testResult.duration;
         FinalPopUp.GetComponent<TestFinishPopup>().ScoreValue.GetComponent<TextMeshProUGUI>().text = testResult.score;
@@ -94,14 +112,14 @@ public class PopUpManager : MonoBehaviour
 
     public void CreateErrorPopup(string sTitle, string sDesc) 
     {
-        GameObject ErrorPopup = ShowPopUp(PopUps[3], false);
+        GameObject ErrorPopup = ShowPopUp(ERRORPOPUP, false);
         ErrorPopup.GetComponent<ErrorPopUp>().Fill(sTitle, sDesc);
         //ShowPopUp(ErrorPopup);
     }
 
     public GameObject CreateConfirmationPopup(string sTitle, string sLeft, string sRight, Action<bool> buttonAction, bool bAction)
     {
-        GameObject ConfirmPopup = ShowPopUp(PopUps[4], true);
+        GameObject ConfirmPopup = ShowPopUp(CONFIRMATIONPOPUP, true);
         ConfirmPopup.GetComponent<ConfirmPopup>().Fill(sTitle, sLeft, sRight, buttonAction, bAction);
         ConfirmPopup.transform.SetParent(PopUpSpawner, false);
 
@@ -127,7 +145,7 @@ public class PopUpManager : MonoBehaviour
             return;
         }
 
-        GameObject Popup = ShowPopUp(PopUps[5], true);
+        GameObject Popup = ShowPopUp(SENDREPORTPOPUP, true);
 
         if (isQuestion)
         {
@@ -140,12 +158,12 @@ public class PopUpManager : MonoBehaviour
 
     public void PrepScoreboardPopUp(string result)
     {
-        GameObject scoreBoard = ShowPopUp(PopUps[6], false);
+        GameObject scoreBoard = ShowPopUp(SCOREBOARDPOPUP, false);
         scoreBoard.GetComponent<ScoreManager>().PopulateScoreboard("INF.02");
     }
 
     public void PrepProfilePopUp()
     {
-        ShowPopUp(PopUps[7], false);
+        ShowPopUp(PROFILEPOPUP, false);
     }
 }
