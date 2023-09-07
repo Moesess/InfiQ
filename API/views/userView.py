@@ -1,12 +1,11 @@
-from django.db.models import Window, F, OuterRef, Subquery
-from django.db.models.functions import RowNumber
+from django.db.models import Window, F, OuterRef, Subquery, Max, Min
+from django.db.models.functions import DenseRank
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from ..models import User, TestResult
 from ..serializers import UserSerializer, TopScoreUserSerializer
-
 
 
 class UserView(viewsets.ModelViewSet):
@@ -31,6 +30,7 @@ class UserView(viewsets.ModelViewSet):
 
         best_scores = TestResult.objects.filter(
             tr_test__t_testType__tt_name=test_type,
+            tr_test__testresult__tr_isDone=True,
             tr_test__t_user=OuterRef('u_uid')
         ).order_by('-tr_final_score').annotate(
             duration=F('tr_date_end') - F('tr_date_start'))
@@ -54,26 +54,35 @@ class UserView(viewsets.ModelViewSet):
         if not test_type:
             return Response({"error": "Test type is required."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Tworzenie rankingu na podstawie wyniku.
-        ranking = TestResult.objects.filter(
-            tr_test__t_testType__tt_name=test_type
+        user_best_score = TestResult.objects.filter(
+            tr_test__t_testType__tt_name=test_type,
+            tr_test__testresult__tr_isDone=True,
+            tr_test__t_user__u_uid=user_uid
+        ).aggregate(Max('tr_final_score'))['tr_final_score__max']
+
+        user_ranking = TestResult.objects.filter(
+            tr_test__t_testType__tt_name=test_type,
+            tr_test__testresult__tr_isDone=True,
+            tr_final_score__gt=user_best_score
+        ).count() + 1
+
+        user_duration = TestResult.objects.filter(
+            tr_test__t_testType__tt_name=test_type,
+            tr_test__testresult__tr_isDone=True,
+            tr_test__t_user__u_uid=user_uid,
+            tr_final_score=user_best_score
         ).annotate(
-            rank=Window(
-                expression=RowNumber(),
-                order_by=F('tr_final_score').desc()
-            )
-        )
+            duration=F('tr_date_end') - F('tr_date_start')
+        ).values('duration').first()
 
-        user_position = ranking.filter(tr_test__t_user__u_uid=user_uid).first()
-
-        if not user_position:
-            return Response({"error": "User not found in the ranking."}, status=status.HTTP_404_NOT_FOUND)
+        if not user_duration:
+            return Response({"error": "User duration not found."}, status=status.HTTP_404_NOT_FOUND)
 
         response_data = {
-            'username': user_position.tr_test.t_user.username,
-            'rank': user_position.rank,
-            'score': user_position.tr_final_score,
-            'duration': user_position.duration.total_seconds()
+            'username': User.objects.get(u_uid=user_uid).username,
+            'rank': user_ranking,
+            'score': user_best_score,
+            'duration': user_duration['duration'].total_seconds()
         }
 
         return Response(response_data)
