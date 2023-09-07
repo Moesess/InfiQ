@@ -31,9 +31,15 @@ public class ProfileManager : MonoBehaviour
         public float accuracy;
     }
 
+    public void Start()
+    {
+        ProfileButtonClick();
+    }
+
     public void PopulateUserProfile()
     {
-        StartCoroutine(APIManager.instance.GetRequest(APIManager.USERS_URL + "/5c67f9e6-209c-4888-b837-cf7f656d8766/",
+        FirebaseManager.instance.GetUserUID(
+            x => StartCoroutine(APIManager.instance.GetRequest(APIManager.USERS_URL + x,
             result =>
             {
                 if (result == null)
@@ -45,7 +51,12 @@ public class ProfileManager : MonoBehaviour
                 allAnswers.text = response.all_answers.ToString();
                 correctAnswers.text = response.correct_answers.ToString();
                 accuracy.text = string.Format("{0:0.00}", response.accuracy) + "%";
-            }));
+            })));
+    }
+
+    public void ProfileButtonClick()
+    {
+        FirebaseManager.instance.SignInWithGoogle(PopulateUserProfile);
     }
 
 }

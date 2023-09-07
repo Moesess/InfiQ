@@ -146,8 +146,6 @@ public class PopUpManager : MonoBehaviour
 
     public void PrepProfilePopUp()
     {
-        //ProfileManager.PopulateProfile();
-        GameObject profilePopUp = ShowPopUp(PopUps[7], false);
-
+        ShowPopUp(PopUps[7], false);
     }
 }

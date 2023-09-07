@@ -20,6 +20,7 @@ public class FirebaseManager : MonoBehaviour
 
     [SerializeField] GameObject Username;
     [SerializeField] GameObject UsernameText;
+    public static FirebaseManager instance;
 
     private FirebaseAuth auth;
     public FirebaseUser User;
@@ -36,6 +37,15 @@ public class FirebaseManager : MonoBehaviour
 
             InitializeFirebase();
         });
+
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Start()
@@ -43,7 +53,7 @@ public class FirebaseManager : MonoBehaviour
         if (!IsUserLoggedIn())
         {
             UsernameText.GetComponent<TextMeshProUGUI>().text = "Niezalogowany";
-            SignInWithGoogle();
+            SignInWithGoogle(null);
         }
     }
 
@@ -57,7 +67,7 @@ public class FirebaseManager : MonoBehaviour
         if (auth.CurrentUser != null)
         {
             Username.SetActive(true);
-            UsernameText.GetComponent<TextMeshProUGUI>().text = GetUsername();
+            UsernameText.GetComponent<TextMeshProUGUI>().text = GetGoogleUsername();
         }
     }
 
@@ -82,7 +92,7 @@ public class FirebaseManager : MonoBehaviour
         if (auth.CurrentUser != null)
         {
             Username.SetActive(true);
-            UsernameText.GetComponent<TextMeshProUGUI>().text = GetUsername();
+            UsernameText.GetComponent<TextMeshProUGUI>().text = GetGoogleUsername();
         }
     }
 
@@ -93,7 +103,7 @@ public class FirebaseManager : MonoBehaviour
         auth = null;
     }
 
-    public void SignInWithGoogle()
+    public void SignInWithGoogle(Action callback)
     {
         GoogleSignIn.Configuration = new GoogleSignInConfiguration
         {
@@ -123,6 +133,10 @@ public class FirebaseManager : MonoBehaviour
                     string accessToken = googleUser.AuthCode;
 
                     SignInWithGoogleOnFirebase(idToken, accessToken);
+                    if (callback != null)
+                    {
+                        callback.Invoke();
+                    }
                 }
             });
     }
@@ -181,7 +195,7 @@ public class FirebaseManager : MonoBehaviour
         return false;
     }
 
-    public string GetUsername()
+    public string GetGoogleUsername()
     {
         if (FirebaseAuth.DefaultInstance != null)
             return FirebaseAuth.DefaultInstance.CurrentUser.DisplayName;
@@ -196,7 +210,6 @@ public class FirebaseManager : MonoBehaviour
             {
                 if (result == null)
                     return;
-                Debug.Log(result);
                 string auth = JsonUtility.FromJson<Response>(result).auth;
                 callback?.Invoke(auth);
             }
