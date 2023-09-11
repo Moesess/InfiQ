@@ -60,6 +60,9 @@ class UserView(viewsets.ModelViewSet):
             tr_test__t_user__u_uid=user_uid
         ).aggregate(Max('tr_final_score'))['tr_final_score__max']
 
+        if user_best_score is None:
+            user_best_score = 0
+
         user_ranking = TestResult.objects.filter(
             tr_test__t_testType__tt_name=test_type,
             tr_test__testresult__tr_isDone=True,
@@ -76,7 +79,12 @@ class UserView(viewsets.ModelViewSet):
         ).values('duration').first()
 
         if not user_duration:
-            return Response({"error": "User duration not found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({
+                'username': User.objects.get(u_uid=user_uid).username,
+                'rank': 0,
+                'score': 0,
+                'duration': 0
+            })
 
         response_data = {
             'username': User.objects.get(u_uid=user_uid).username,

@@ -56,7 +56,7 @@ public class PopUpManager : MonoBehaviour
         GameObject FinalPopUp = ShowPopUp(PopUps[2], false);
         GameObject IncorrectAnsPrefab = PopUps[2].GetComponent<TestFinishPopup>().IncorrectAnswerPrefab;
 
-        FinalPopUp.GetComponent<TestFinishPopup>().TimeValue.GetComponent<TextMeshProUGUI>().text = testResult.duration;
+        FinalPopUp.GetComponent<TestFinishPopup>().TimeValue.GetComponent<TextMeshProUGUI>().text = Math.Round(float.Parse(testResult.duration), 2).ToString() + "s";
         FinalPopUp.GetComponent<TestFinishPopup>().ScoreValue.GetComponent<TextMeshProUGUI>().text = testResult.score;
         FinalPopUp.GetComponent<TestFinishPopup>().FinalScoreValue.GetComponent<TextMeshProUGUI>().text = testResult.final_score.ToString();
 

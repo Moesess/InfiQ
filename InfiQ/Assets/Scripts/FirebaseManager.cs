@@ -6,6 +6,7 @@ using Firebase.Extensions;
 using TMPro;
 using System;
 using static ScoreManager;
+using System.Collections;
 
 [System.Serializable]
 public class Response
@@ -209,16 +210,20 @@ public class FirebaseManager : MonoBehaviour
         return "";
     }
 
-    public void GetUserUID(Action<string> callback)
+    public IEnumerator GetUserUID(Action<string> callback)
     {
-        StartCoroutine(APIManager.instance.GetRequest(APIManager.USERS_URL,
+        string uid = "";
+        yield return APIManager.instance.GetRequest(APIManager.USERS_URL,
             result =>
             {
                 if (result == null)
                     return;
+
                 string auth = JsonUtility.FromJson<Response>(result).auth;
-                callback?.Invoke(auth);
+                uid = auth;
             }
-        ));
+        );
+
+        callback?.Invoke(uid);
     }
 }
