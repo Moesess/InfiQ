@@ -31,6 +31,7 @@ public class FirebaseManager : MonoBehaviour
         {
             if (task.Exception != null)
             {
+                PopUpManager.instance.CreateErrorPopup("ERROR", $"Failed to check Firebase dependencies: {task.Exception}");
                 Debug.LogError($"Failed to check Firebase dependencies: {task.Exception}");
                 return;
             }
@@ -48,15 +49,6 @@ public class FirebaseManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        if (!IsUserLoggedIn())
-        {
-            UsernameText.GetComponent<TextMeshProUGUI>().text = "Niezalogowany";
-            SignInWithGoogle(null);
-        }
-    }
-
     private void InitializeFirebase()
     {
         FirebaseApp app = FirebaseApp.DefaultInstance;
@@ -68,6 +60,22 @@ public class FirebaseManager : MonoBehaviour
         {
             Username.SetActive(true);
             UsernameText.GetComponent<TextMeshProUGUI>().text = GetGoogleUsername();
+            auth.CurrentUser.TokenAsync(true).ContinueWith(tokenTask =>
+            {
+                if (tokenTask.IsCanceled)
+                {
+                    Debug.LogError("TokenAsync was canceled.");
+                    return;
+                }
+                if (tokenTask.IsFaulted)
+                {
+                    Debug.LogError("TokenAsync encountered an error.");
+                    return;
+                }
+
+                string firebaseToken = tokenTask.Result;
+                APIManager.instance.AuthToken = firebaseToken;
+            });
         }
     }
 
@@ -132,16 +140,12 @@ public class FirebaseManager : MonoBehaviour
                     string idToken = googleUser.IdToken;
                     string accessToken = googleUser.AuthCode;
 
-                    SignInWithGoogleOnFirebase(idToken, accessToken);
-                    if (callback != null)
-                    {
-                        callback.Invoke();
-                    }
+                    SignInWithGoogleOnFirebase(idToken, accessToken, callback);
                 }
             });
     }
 
-    private void SignInWithGoogleOnFirebase(string idToken, string accessToken)
+    private void SignInWithGoogleOnFirebase(string idToken, string accessToken, Action callback)
     {
         try 
         {
@@ -178,6 +182,8 @@ public class FirebaseManager : MonoBehaviour
 
                     string firebaseToken = tokenTask.Result;
                     APIManager.instance.AuthToken = firebaseToken;
+
+                    callback?.Invoke();
                 });
             });
         }
@@ -213,6 +219,6 @@ public class FirebaseManager : MonoBehaviour
                 string auth = JsonUtility.FromJson<Response>(result).auth;
                 callback?.Invoke(auth);
             }
-            ));
+        ));
     }
 }

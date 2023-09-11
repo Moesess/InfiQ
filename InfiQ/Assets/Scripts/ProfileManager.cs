@@ -1,3 +1,4 @@
+using Firebase.Auth;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -44,7 +45,7 @@ public class ProfileManager : MonoBehaviour
             {
                 if (result == null)
                     return;
-                Debug.Log(result);
+
                 User response = JsonUtility.FromJson<User>(result);
                 nickName.text = response.name;
                 completedTests.text = response.number_of_tests.ToString();
@@ -56,7 +57,10 @@ public class ProfileManager : MonoBehaviour
 
     public void ProfileButtonClick()
     {
-        FirebaseManager.instance.SignInWithGoogle(PopulateUserProfile);
+        if (!FirebaseManager.IsUserLoggedIn())
+            FirebaseManager.instance.SignInWithGoogle( () => { PopulateUserProfile(); });
+        else
+            PopulateUserProfile();
     }
 
 }
