@@ -1,3 +1,5 @@
+using System;
+using TMPro;
 using UnityEngine;
 
 
@@ -5,10 +7,22 @@ using UnityEngine;
 public class ScoreManager : MonoBehaviour
 {
     [SerializeField]
-    GameObject scoreBoard;
+    GameObject ScoreBoard;
 
     [SerializeField]
-    GameObject scoreBoardElement;
+    GameObject ScoreBoardElement;
+
+    [SerializeField]
+    TextMeshProUGUI PlayerPlace;
+
+    [SerializeField]
+    TextMeshProUGUI PlayerName;
+
+    [SerializeField]
+    TextMeshProUGUI PlayerScore;
+
+    [SerializeField]
+    TextMeshProUGUI PlayerTime;
 
     [System.Serializable]
     public class Score
@@ -25,20 +39,46 @@ public class ScoreManager : MonoBehaviour
         public Score[] scoreList;
     }
 
+    [System.Serializable]
+    public class User
+    {
+        public string username;
+        public int rank;
+        public int score;
+        public float duration;
+    }
+
     public void PopulateScoreboard(string actualTestType)
     {
         DePopulateScoreboard();
+
+        FirebaseManager.instance.GetUserUID(
+            x => StartCoroutine(APIManager.instance.GetRequest(APIManager.USER_HIGH_SCORES_URL + actualTestType + "&user_uid=" + x,
+            result =>
+            {
+                if (result == null)
+                    return;
+
+                User response = JsonUtility.FromJson<User>(result);
+                PlayerPlace.text = response.rank.ToString();
+                PlayerName.text = response.username;
+                PlayerScore.text = response.score.ToString();
+                PlayerTime.text = Math.Round(response.duration, 2).ToString();
+            }   
+            ))
+        );
+
         StartCoroutine(APIManager.instance.GetRequest(APIManager.HIGH_SCORES_URL + actualTestType,
             result =>
             {
                 if (result == null)
                     return;
-                Debug.Log(result);
+                //Debug.Log(result);
                 Score[] response = JsonUtility.FromJson<ScoreBoardResponse>("{\"scoreList\":" + result + "}").scoreList;
                 int place = 1;
                 foreach(Score score in response)
                 {
-                    GameObject scoreElement = Instantiate(scoreBoardElement, scoreBoard.transform.position, Quaternion.identity, scoreBoard.transform);
+                    GameObject scoreElement = Instantiate(ScoreBoardElement, ScoreBoard.transform.position, Quaternion.identity, ScoreBoard.transform);
                     scoreElement.GetComponent<ScoreBoardElement>().FillElement(place.ToString()+".", score.username, score.best_score, score.duration);
                     place++;
                 }
@@ -47,9 +87,9 @@ public class ScoreManager : MonoBehaviour
     }
     private void DePopulateScoreboard()
     {
-        foreach(Transform score in scoreBoard.transform)
+        foreach(Transform score in ScoreBoard.transform)
         {
-            GameObject.Destroy(score.gameObject);
+            Destroy(score.gameObject);
         }    
     }
     public void ChangeToINF02()
