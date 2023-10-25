@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static ProfileManager;
 
 public class PopUpManager : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class PopUpManager : MonoBehaviour
     [SerializeField] Transform PopUpSpawner;
 
     public static PopUpManager instance;
-    
+
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -47,7 +48,7 @@ public class PopUpManager : MonoBehaviour
         return Instantiate(PopUp, PopUpSpawner.position, Quaternion.identity, PopUpSpawner);
     }
 
-    public void PrepFinishPopup(string result, List<Question> Questions, List<string>AnswersUIDS)
+    public void PrepFinishPopup(string result, List<Question> Questions, List<string> AnswersUIDS)
     {
         TestResultWrapper wrapper = JsonUtility.FromJson<TestResultWrapper>(result);
         TestResult testResult = wrapper.test_result;
@@ -63,7 +64,7 @@ public class PopUpManager : MonoBehaviour
         GameObject content = FinalPopUp.GetComponent<TestFinishPopup>().IncorrectAnswersContent;
         int counter = 0;
 
-        foreach(Question question in Questions)
+        foreach (Question question in Questions)
         {
             counter++;
             string userAnswer = "";
@@ -73,13 +74,13 @@ public class PopUpManager : MonoBehaviour
                 if (question.answers[i].correct)
                     correctAnswer = question.answers[i].text;
 
-                if(question.answers[i].uid == AnswersUIDS[counter-1])
+                if (question.answers[i].uid == AnswersUIDS[counter - 1])
                     userAnswer = question.answers[i].text;
             }
 
-            if(correctAnswer == userAnswer)
+            if (correctAnswer == userAnswer)
                 continue;
-            
+
             IncorrectAnsPrefab.GetComponent<IncorrectAnswer>().QuestionID.GetComponent<TextMeshProUGUI>().text = counter.ToString();
             IncorrectAnsPrefab.GetComponent<IncorrectAnswer>().QuestionText.GetComponent<TextMeshProUGUI>().text = question.text;
             IncorrectAnsPrefab.GetComponent<IncorrectAnswer>().UserAnswer.GetComponent<TextMeshProUGUI>().text = userAnswer;
@@ -89,10 +90,10 @@ public class PopUpManager : MonoBehaviour
             IncorrectAnswer.transform.SetParent(content.transform, false);
 
         }
-        
+
     }
 
-    public void CreateErrorPopup(string sTitle, string sDesc) 
+    public void CreateErrorPopup(string sTitle, string sDesc)
     {
         GameObject ErrorPopup = ShowPopUp(PopUps[3], false);
         ErrorPopup.GetComponent<ErrorPopUp>().Fill(sTitle, sDesc);
@@ -133,7 +134,7 @@ public class PopUpManager : MonoBehaviour
         {
             Popup.GetComponent<MailTo>().Subject.readOnly = true;
             Popup.GetComponent<MailTo>().Subject.interactable = false;
-                
+
             Popup.GetComponent<MailTo>().Subject.text = "Zg�oszenie pytania: " + TestManager.Instance.sCurrentQuestionID;
         }
     }
@@ -147,5 +148,35 @@ public class PopUpManager : MonoBehaviour
     public void PrepProfilePopUp()
     {
         ShowPopUp(PopUps[7], false);
+    }
+    public void ShowQuestionnairePopUp()
+    {
+        FirebaseManager.instance.GetUserUID(
+    x => StartCoroutine(APIManager.instance.GetRequest(APIManager.USERS_URL + x,
+    result =>
+    {
+        if (result == null)
+            return;
+
+        User response = JsonUtility.FromJson<User>(result);
+        if(response.number_of_tests > 10 && PlayerPrefs.GetInt("WASQUESTIONNAIREFILLED", 0) == 0)
+        {
+            ShowPopUp(PopUps[8], false);
+        }
+    })));
+    }
+    public void ShowQuestionnaire()
+    {
+        Application.OpenURL("https://forms.gle/oZAMAKqL3yLRU8Z26");
+        PlayerPrefs.SetInt("WASQUESTIONNAIREFILLED", 1);
+    }
+    public void ShowLoadingPopUp()
+    {
+        ShowPopUp(PopUps[9], false);
+    }
+    public void CloseLoadingPopUp()
+    {
+        var loadingPopup = PopUps[9].GetComponent<PopUp>();
+        loadingPopup.Close();
     }
 }

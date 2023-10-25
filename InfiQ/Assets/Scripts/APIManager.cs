@@ -46,8 +46,9 @@ public class APIManager : MonoBehaviour
             {
                 www.SetRequestHeader("Authorization", "Bearer " + AuthToken);
             }
-
+            PopUpManager.instance.ShowLoadingPopUp();
             yield return www.SendWebRequest();
+            PopUpManager.instance.CloseLoadingPopUp();
 
             if (www.result == UnityWebRequest.Result.Success)
             {
@@ -72,8 +73,9 @@ public class APIManager : MonoBehaviour
         {
             request.SetRequestHeader("Authorization", "Bearer " + AuthToken);
         }
-
+        PopUpManager.instance.ShowLoadingPopUp();
         yield return request.SendWebRequest();
+        PopUpManager.instance.CloseLoadingPopUp();
 
         if (request.result == UnityWebRequest.Result.Success)
         {
@@ -101,8 +103,9 @@ public class APIManager : MonoBehaviour
             {
                 request.SetRequestHeader("Authorization", "Bearer " + APIManager.instance.AuthToken);
             }
-
+            PopUpManager.instance.ShowLoadingPopUp();
             yield return request.SendWebRequest();
+            PopUpManager.instance.CloseLoadingPopUp();
 
             if (request.result == UnityWebRequest.Result.Success)
             {

@@ -293,7 +293,7 @@ public class TestManager : MonoBehaviour
         {
             if (result == null)
                 return;
-
+            PopUpManager.instance.ShowQuestionnairePopUp();
             PopUpManager.instance.PrepFinishPopup(result, Questions, AnswersUIDS);
         }));
     }
@@ -311,7 +311,7 @@ public class TestManager : MonoBehaviour
         else
         {
             Confirm = PopUpManager.instance.CreateConfirmationPopup(
-                "Czy na pewno chcesz wyjœæ? \n Test zostanie uniewa¿niony!", "Wychodzê", "Zostaje!", ReturnToMenu, true);
+                "Czy na pewno chcesz wyjï¿½ï¿½? \n Test zostanie uniewaï¿½niony!", "Wychodzï¿½", "Zostaje!", ReturnToMenu, true);
         }
     }
 
@@ -457,7 +457,7 @@ public class TestManager : MonoBehaviour
         }
         else
         {
-            PopUpManager.instance.CreateErrorPopup("ERROR", "Nie jesteœ zalogowany! Tylko zalogowani u¿ytkownicy maj¹ dostêp do testów!");
+            PopUpManager.instance.CreateErrorPopup("ERROR", "Nie jesteï¿½ zalogowany! Tylko zalogowani uï¿½ytkownicy majï¿½ dostï¿½p do testï¿½w!");
         }
     }
 }

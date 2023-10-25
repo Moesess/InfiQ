@@ -1975,6 +1975,8 @@ MonoBehaviour:
   - {fileID: 5407440291287863476, guid: d22b2ccdb40412e47bc49c69d913e496, type: 3}
   - {fileID: 7257142898277891954, guid: 6343e174df2494d8680217ba9b1f8ae4, type: 3}
   - {fileID: 9103396310203696766, guid: dd5c823c20cb24f75b7dd16ff38472ea, type: 3}
+  - {fileID: 2728646501888146932, guid: 8074d2b7834384bd8949d5438fde8d18, type: 3}
+  - {fileID: 6687835345847819579, guid: 6d3c0fd31374f437ab574cfdcab9a106, type: 3}
   PopUpSpawner: {fileID: 1563911145}
 --- !u!224 &1008130747 stripped
 RectTransform:

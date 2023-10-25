@@ -6,7 +6,22 @@ public class GameManager : MonoBehaviour
     {
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
-        PlayerPrefs.SetFloat("LastEmailTime", -30f); // Po w³¹czeniu gry by mo¿na by³o wys³aæ zg³oszenie
+        PlayerPrefs.SetFloat("LastEmailTime", -30f); // Po wï¿½ï¿½czeniu gry by moï¿½na byï¿½o wysï¿½aï¿½ zgï¿½oszenie
         PlayerPrefs.SetInt("EmailCount", 0); // DEBUG ONLY
+        if (PlayerPrefs.GetInt("FIRSTTIMEOPENING", 1) == 1)
+        {
+            Debug.Log("First Time Opening");
+
+            
+            PlayerPrefs.SetInt("FIRSTTIMEOPENING", 0);
+            PlayerPrefs.SetInt("WASQUESTIONNAIREFILLED", 0);
+
+        }
+        else
+        {
+            Debug.Log("NOT First Time Opening");
+
+            //Do your stuff here
+        }
     }
 }
