@@ -85,7 +85,7 @@ public class TestValidateData
 public class TestManager : MonoBehaviour
 {
     // TODO ONLY FOR DEBUG
-    private const bool DEBUG_MODE = true;
+    private const bool DEBUG_MODE = false;
 
     public static TestManager Instance;
 
@@ -311,7 +311,7 @@ public class TestManager : MonoBehaviour
         else
         {
             Confirm = PopUpManager.instance.CreateConfirmationPopup(
-                "Czy na pewno chcesz wyj��? \n Test zostanie uniewa�niony!", "Wychodz�", "Zostaje!", ReturnToMenu, true);
+                "Czy na pewno chcesz wyjść? \n Test zostanie unieważniony!", "Wychodzę", "Zostaje!", ReturnToMenu, true);
         }
     }
 
@@ -406,12 +406,11 @@ public class TestManager : MonoBehaviour
 
     public void StartTest(string sTestType)
     {
-        INF2Btn.SetActive(false);
-        INF3Btn.SetActive(false);
-        INF4Btn.SetActive(false);
-
         if (FirebaseManager.IsUserLoggedIn() || DEBUG_MODE)
         {
+            INF2Btn.SetActive(false);
+            INF3Btn.SetActive(false);
+            INF4Btn.SetActive(false);
 
             string sTestType_uid;
 
@@ -457,7 +456,7 @@ public class TestManager : MonoBehaviour
         }
         else
         {
-            PopUpManager.instance.CreateErrorPopup("ERROR", "Nie jeste� zalogowany! Tylko zalogowani u�ytkownicy maj� dost�p do test�w!");
+            PopUpManager.instance.CreateErrorPopup("ERROR", "Nie jesteś zalogowany! Tylko zalogowani użytkownicy mają dostęp do testów!");
         }
     }
 }

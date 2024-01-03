@@ -1,3 +1,4 @@
+using System.Globalization;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -6,8 +7,11 @@ public class GameManager : MonoBehaviour
     {
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
-        PlayerPrefs.SetFloat("LastEmailTime", -30f); // Po w��czeniu gry by mo�na by�o wys�a� zg�oszenie
+        PlayerPrefs.SetFloat("LastEmailTime", -30f); // Po wyłączeniu gry by można było wysłać zgłoszenie
         PlayerPrefs.SetInt("EmailCount", 0); // DEBUG ONLY
+        CultureInfo culture = new CultureInfo("en-US");
+        CultureInfo.DefaultThreadCurrentCulture = culture;
+        CultureInfo.DefaultThreadCurrentUICulture = culture;
         if (PlayerPrefs.GetInt("FIRSTTIMEOPENING", 1) == 1)
         {
             Debug.Log("First Time Opening");

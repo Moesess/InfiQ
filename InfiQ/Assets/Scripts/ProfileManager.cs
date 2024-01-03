@@ -34,25 +34,47 @@ public class ProfileManager : MonoBehaviour
 
     public void Start()
     {
+        PopUpManager.instance.ShowLoadingPopUp();
         ProfileButtonClick();
     }
 
     public void PopulateUserProfile()
     {
-        FirebaseManager.instance.GetUserUID(
-            x => StartCoroutine(APIManager.instance.GetRequest(APIManager.USERS_URL + x,
-            result =>
-            {
-                if (result == null)
-                    return;
+        StartCoroutine(GetUserProfile());
+    }
 
-                User response = JsonUtility.FromJson<User>(result);
-                nickName.text = response.name;
-                completedTests.text = response.number_of_tests.ToString();
-                allAnswers.text = response.all_answers.ToString();
-                correctAnswers.text = response.correct_answers.ToString();
-                accuracy.text = string.Format("{0:0.00}", response.accuracy) + "%";
-            })));
+    private IEnumerator GetUserProfile()
+    {
+        if (FirebaseManager.IsUserLoggedIn())
+        {
+            yield return FirebaseManager.instance.GetUserUID(uid =>
+            {
+                StartCoroutine(FetchUserDetails(uid));
+            });
+        }
+        else
+        {
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(GetUserProfile());
+        }
+    }
+
+    private IEnumerator FetchUserDetails(string uid)
+    {
+        string result = null;
+        yield return APIManager.instance.GetRequest(APIManager.USERS_URL + uid, res => { result = res; });
+
+        if (result == null)
+            yield break;
+
+        User response = JsonUtility.FromJson<User>(result);
+        nickName.text = response.name;
+        completedTests.text = response.number_of_tests.ToString();
+        allAnswers.text = response.all_answers.ToString();
+        correctAnswers.text = response.correct_answers.ToString();
+        accuracy.text = string.Format("{0:0.00}", response.accuracy) + "%";
+
+        PopUpManager.instance.CloseLoadingPopUp();
     }
 
     public void ProfileButtonClick()
@@ -62,5 +84,4 @@ public class ProfileManager : MonoBehaviour
         else
             PopulateUserProfile();
     }
-
 }

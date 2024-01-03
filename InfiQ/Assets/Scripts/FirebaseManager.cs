@@ -61,7 +61,7 @@ public class FirebaseManager : MonoBehaviour
         {
             Username.SetActive(true);
             UsernameText.GetComponent<TextMeshProUGUI>().text = GetGoogleUsername();
-            auth.CurrentUser.TokenAsync(true).ContinueWith(tokenTask =>
+            auth.CurrentUser.TokenAsync(true).ContinueWithOnMainThread(tokenTask =>
             {
                 if (tokenTask.IsCanceled)
                 {
@@ -121,7 +121,7 @@ public class FirebaseManager : MonoBehaviour
             WebClientId = WEB_CLIENT_ID
         };
 
-        GoogleSignIn.DefaultInstance.SignIn().ContinueWith(
+        GoogleSignIn.DefaultInstance.SignIn().ContinueWithOnMainThread(
             task =>
             {
                 if (task.IsCanceled)
@@ -151,7 +151,7 @@ public class FirebaseManager : MonoBehaviour
         try 
         {
             Credential credential = GoogleAuthProvider.GetCredential(idToken, accessToken);
-            auth.SignInWithCredentialAsync(credential).ContinueWith(task =>
+            auth.SignInWithCredentialAsync(credential).ContinueWithOnMainThread(task =>
             {
                 if (task.IsCanceled)
                 {
@@ -168,7 +168,7 @@ public class FirebaseManager : MonoBehaviour
                 //Debug.Log("User signed in successfully" + User.DisplayName + " " + User.UserId);
 
                 // Retrieve the Firebase token
-                User.TokenAsync(true).ContinueWith(tokenTask =>
+                User.TokenAsync(true).ContinueWithOnMainThread(tokenTask =>
                 {
                     if (tokenTask.IsCanceled)
                     {

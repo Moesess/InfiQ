@@ -10,6 +10,7 @@ public class PopUpManager : MonoBehaviour
     [SerializeField] Transform PopUpSpawner;
 
     public static PopUpManager instance;
+    private GameObject loadingPopup;
 
     void Awake()
     {
@@ -88,9 +89,7 @@ public class PopUpManager : MonoBehaviour
 
             GameObject IncorrectAnswer = Instantiate(IncorrectAnsPrefab, Vector3.zero, Quaternion.identity);
             IncorrectAnswer.transform.SetParent(content.transform, false);
-
         }
-
     }
 
     public void CreateErrorPopup(string sTitle, string sDesc)
@@ -118,13 +117,13 @@ public class PopUpManager : MonoBehaviour
 
         if (!(PlayerPrefs.GetInt("EmailCount", 0) < 10))
         {
-            CreateErrorPopup("B��D", "Odczekaj troch� przed wysy�aniem kolejnych zg�osze�. Pami�taj �e limit na dzie� to 10!");
+            CreateErrorPopup("BŁĄD", "Odczekaj trochę przed wysy�aniem kolejnych zgłoszeń. Pamiętaj że limit na dzień to 10!");
             return;
         }
 
         if (Time.time - PlayerPrefs.GetFloat("LastEmailTime", 0f) < 30f)
         {
-            CreateErrorPopup("B��D", "Odczekaj troch� przed wys�aniem kolejnego zg�oszenia.");
+            CreateErrorPopup("BŁĄD", "Odczekaj trochę przed wysłaniem kolejnego zgłoszenia.");
             return;
         }
 
@@ -135,7 +134,7 @@ public class PopUpManager : MonoBehaviour
             Popup.GetComponent<MailTo>().Subject.readOnly = true;
             Popup.GetComponent<MailTo>().Subject.interactable = false;
 
-            Popup.GetComponent<MailTo>().Subject.text = "Zg�oszenie pytania: " + TestManager.Instance.sCurrentQuestionID;
+            Popup.GetComponent<MailTo>().Subject.text = "Zgłoszenie pytania: " + TestManager.Instance.sCurrentQuestionID;
         }
     }
 
@@ -151,32 +150,34 @@ public class PopUpManager : MonoBehaviour
     }
     public void ShowQuestionnairePopUp()
     {
-        FirebaseManager.instance.GetUserUID(
-    x => StartCoroutine(APIManager.instance.GetRequest(APIManager.USERS_URL + x,
-    result =>
-    {
-        if (result == null)
-            return;
-
-        User response = JsonUtility.FromJson<User>(result);
-        if(response.number_of_tests > 10 && PlayerPrefs.GetInt("WASQUESTIONNAIREFILLED", 0) == 0)
+        FirebaseManager.instance.GetUserUID( x => StartCoroutine(APIManager.instance.GetRequest(APIManager.USERS_URL + x,
+        result =>
         {
-            ShowPopUp(PopUps[8], false);
-        }
-    })));
+            if (result == null)
+                return;
+
+            User response = JsonUtility.FromJson<User>(result);
+            if(response.number_of_tests > 4 && PlayerPrefs.GetInt("WASQUESTIONNAIREFILLED", 0) == 0)
+            {
+                ShowPopUp(PopUps[8], false);
+            }
+        })));
     }
     public void ShowQuestionnaire()
     {
-        Application.OpenURL("https://forms.gle/oZAMAKqL3yLRU8Z26");
+        Application.OpenURL("https://forms.gle/me4LVnaULopgFM8b8");
         PlayerPrefs.SetInt("WASQUESTIONNAIREFILLED", 1);
     }
     public void ShowLoadingPopUp()
     {
-        ShowPopUp(PopUps[9], false);
+        if(loadingPopup == null)
+            loadingPopup = ShowPopUp(PopUps[9], false);
     }
+
     public void CloseLoadingPopUp()
     {
-        var loadingPopup = PopUps[9].GetComponent<PopUp>();
-        loadingPopup.Close();
+        //var loadingPopup = PopUps[9].GetComponent<PopUp>();
+        if (loadingPopup != null)
+            loadingPopup.GetComponent<PopUp>().Close();
     }
 }
