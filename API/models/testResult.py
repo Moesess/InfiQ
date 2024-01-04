@@ -41,7 +41,12 @@ class TestResult(models.Model):
     @property
     def calculate_score(self):
         if self.duration:
-            score = self.tr_score * 1000 / self.duration.seconds
+            bad_ans = 40 - self.tr_score
+            score = ((self.tr_score * 250) - (self.duration.seconds * bad_ans / 1.25)) / (
+                    (self.duration.seconds / (self.tr_score * 10 + 1)) + 1)
+            if score < 0:
+                return 0
+
             return score
         return 0
 

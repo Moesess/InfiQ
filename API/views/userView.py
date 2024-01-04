@@ -1,11 +1,12 @@
-from django.db.models import Window, F, OuterRef, Subquery, Max, Min
-from django.db.models.functions import DenseRank
+from django.db.models import Window, F, OuterRef, Subquery, Max, Min, Value, DurationField
+from django.db.models.functions import DenseRank, Coalesce
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from ..models import User, TestResult
 from ..serializers import UserSerializer, TopScoreUserSerializer
+from datetime import timedelta
 
 
 class UserView(viewsets.ModelViewSet):
@@ -36,9 +37,10 @@ class UserView(viewsets.ModelViewSet):
             duration=F('tr_date_end') - F('tr_date_start'))
 
         top_users = User.objects.annotate(
-            best_score=Subquery(best_scores.values('tr_final_score')[:1]),
-            duration=Subquery(best_scores.values('duration')[:1])
-        ).order_by('-u_best_score')[:100]
+            best_score=Coalesce(Subquery(best_scores.values('tr_final_score')[:1]), Value(0)),
+            duration=Coalesce(Subquery(best_scores.values('duration')[:1]),
+                              Value(timedelta(seconds=0), output_field=DurationField()))
+        ).order_by('-best_score', 'duration')[:100]
 
         serialized_users = TopScoreUserSerializer(top_users, many=True)
 
