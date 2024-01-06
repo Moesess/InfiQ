@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static ProfileManager;
 
 public class PopUpManager : MonoBehaviour
 {
@@ -9,7 +10,8 @@ public class PopUpManager : MonoBehaviour
     [SerializeField] Transform PopUpSpawner;
 
     public static PopUpManager instance;
-    
+    private GameObject loadingPopup;
+
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -47,7 +49,7 @@ public class PopUpManager : MonoBehaviour
         return Instantiate(PopUp, PopUpSpawner.position, Quaternion.identity, PopUpSpawner);
     }
 
-    public void PrepFinishPopup(string result, List<Question> Questions, List<string>AnswersUIDS)
+    public void PrepFinishPopup(string result, List<Question> Questions, List<string> AnswersUIDS)
     {
         TestResultWrapper wrapper = JsonUtility.FromJson<TestResultWrapper>(result);
         TestResult testResult = wrapper.test_result;
@@ -56,14 +58,14 @@ public class PopUpManager : MonoBehaviour
         GameObject FinalPopUp = ShowPopUp(PopUps[2], false);
         GameObject IncorrectAnsPrefab = PopUps[2].GetComponent<TestFinishPopup>().IncorrectAnswerPrefab;
 
-        FinalPopUp.GetComponent<TestFinishPopup>().TimeValue.GetComponent<TextMeshProUGUI>().text = testResult.duration;
+        FinalPopUp.GetComponent<TestFinishPopup>().TimeValue.GetComponent<TextMeshProUGUI>().text = Math.Round(float.Parse(testResult.duration), 2).ToString() + "s";
         FinalPopUp.GetComponent<TestFinishPopup>().ScoreValue.GetComponent<TextMeshProUGUI>().text = testResult.score;
         FinalPopUp.GetComponent<TestFinishPopup>().FinalScoreValue.GetComponent<TextMeshProUGUI>().text = testResult.final_score.ToString();
 
         GameObject content = FinalPopUp.GetComponent<TestFinishPopup>().IncorrectAnswersContent;
         int counter = 0;
 
-        foreach(Question question in Questions)
+        foreach (Question question in Questions)
         {
             counter++;
             string userAnswer = "";
@@ -73,13 +75,13 @@ public class PopUpManager : MonoBehaviour
                 if (question.answers[i].correct)
                     correctAnswer = question.answers[i].text;
 
-                if(question.answers[i].uid == AnswersUIDS[counter-1])
+                if (question.answers[i].uid == AnswersUIDS[counter - 1])
                     userAnswer = question.answers[i].text;
             }
 
-            if(correctAnswer == userAnswer)
+            if (correctAnswer == userAnswer)
                 continue;
-            
+
             IncorrectAnsPrefab.GetComponent<IncorrectAnswer>().QuestionID.GetComponent<TextMeshProUGUI>().text = counter.ToString();
             IncorrectAnsPrefab.GetComponent<IncorrectAnswer>().QuestionText.GetComponent<TextMeshProUGUI>().text = question.text;
             IncorrectAnsPrefab.GetComponent<IncorrectAnswer>().UserAnswer.GetComponent<TextMeshProUGUI>().text = userAnswer;
@@ -87,12 +89,10 @@ public class PopUpManager : MonoBehaviour
 
             GameObject IncorrectAnswer = Instantiate(IncorrectAnsPrefab, Vector3.zero, Quaternion.identity);
             IncorrectAnswer.transform.SetParent(content.transform, false);
-
         }
-        
     }
 
-    public void CreateErrorPopup(string sTitle, string sDesc) 
+    public void CreateErrorPopup(string sTitle, string sDesc)
     {
         GameObject ErrorPopup = ShowPopUp(PopUps[3], false);
         ErrorPopup.GetComponent<ErrorPopUp>().Fill(sTitle, sDesc);
@@ -117,13 +117,13 @@ public class PopUpManager : MonoBehaviour
 
         if (!(PlayerPrefs.GetInt("EmailCount", 0) < 10))
         {
-            CreateErrorPopup("B£•D", "Odczekaj trochÍ przed wysy≥aniem kolejnych zg≥oszeÒ. PamiÍtaj øe limit na dzieÒ to 10!");
+            CreateErrorPopup("B≈ÅƒÑD", "Odczekaj trochƒô przed wysyÔøΩaniem kolejnych zg≈Çosze≈Ñ. Pamiƒôtaj ≈ºe limit na dzie≈Ñ to 10!");
             return;
         }
 
         if (Time.time - PlayerPrefs.GetFloat("LastEmailTime", 0f) < 30f)
         {
-            CreateErrorPopup("B£•D", "Odczekaj trochÍ przed wys≥aniem kolejnego zg≥oszenia.");
+            CreateErrorPopup("B≈ÅƒÑD", "Odczekaj trochƒô przed wys≈Çaniem kolejnego zg≈Çoszenia.");
             return;
         }
 
@@ -133,8 +133,38 @@ public class PopUpManager : MonoBehaviour
         {
             Popup.GetComponent<MailTo>().Subject.readOnly = true;
             Popup.GetComponent<MailTo>().Subject.interactable = false;
-                
-            Popup.GetComponent<MailTo>().Subject.text = "Zg≥oszenie pytania: " + TestManager.Instance.sCurrentQuestionID;
+
+            Popup.GetComponent<MailTo>().Subject.text = "Zg≈Çoszenie pytania: " + TestManager.Instance.sCurrentQuestionID;
         }
+    }
+
+    public void PrepScoreboardPopUp(string result)
+    {
+        GameObject scoreBoard = ShowPopUp(PopUps[6], false);
+        scoreBoard.GetComponent<ScoreManager>().PopulateScoreboard("INF.02");
+    }
+
+    public void PrepProfilePopUp()
+    {
+        ShowPopUp(PopUps[7], false);
+    }
+    public void ShowQuestionnairePopUp()
+    {
+        if (PlayerPrefs.GetInt("NUMBEROFFILLEDTESTS", 0) >= 3 && PlayerPrefs.GetInt("WASQUESTIONNAIREFILLED", 0) == 0)
+        {
+            ShowPopUp(PopUps[8], false);
+        }
+    }
+    public void ShowLoadingPopUp()
+    {
+        if(loadingPopup == null)
+            loadingPopup = ShowPopUp(PopUps[9], false);
+    }
+
+    public void CloseLoadingPopUp()
+    {
+        //var loadingPopup = PopUps[9].GetComponent<PopUp>();
+        if (loadingPopup != null)
+            loadingPopup.GetComponent<PopUp>().Close();
     }
 }

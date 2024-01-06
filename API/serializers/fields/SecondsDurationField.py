@@ -7,7 +7,7 @@ class SecondsDurationField(serializers.Field):
 
     def to_representation(self, value: timedelta) -> float:
         """Konwertuje DurationField na sekundy."""
-        return value.total_seconds()
+        return round(value.total_seconds(), 2)
 
     def to_internal_value(self, data: int) -> timedelta:
         """Konwertuje sekundy na DurationField."""

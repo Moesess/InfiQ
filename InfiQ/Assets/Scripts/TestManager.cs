@@ -1,3 +1,4 @@
+using Google.MiniJSON;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -108,7 +109,10 @@ public class TestManager : MonoBehaviour
 
     [SerializeField] GameObject INF2Btn;
     [SerializeField] GameObject INF3Btn;
-    [SerializeField] GameObject INF4Btn;
+    [SerializeField] GameObject INF4Btn;    
+    [SerializeField] GameObject INF2Btn1Q;
+    [SerializeField] GameObject INF3Btn1Q;
+    [SerializeField] GameObject INF4Btn1Q;
     [SerializeField] GameObject QuestionCanvas;
     [SerializeField] public GameObject QuestionID;
     [SerializeField] GameObject QuestionDesc;
@@ -293,14 +297,14 @@ public class TestManager : MonoBehaviour
         {
             if (result == null)
                 return;
-
             PopUpManager.instance.PrepFinishPopup(result, Questions, AnswersUIDS);
         }));
     }
 
     public void ReturnToMenu(bool bQuit)
     {
-        if(bQuit)
+        PopUpManager.instance.ShowQuestionnairePopUp();
+        if (bQuit)
         {
             MainMenuCanvas.SetActive(true);
             QuestionCanvas.SetActive(false);
@@ -311,7 +315,7 @@ public class TestManager : MonoBehaviour
         else
         {
             Confirm = PopUpManager.instance.CreateConfirmationPopup(
-                "Czy na pewno chcesz wyjúÊ? \n Test zostanie uniewaøniony!", "WychodzÍ", "Zostaje!", ReturnToMenu, true);
+                "Czy na pewno chcesz wyj≈õƒá? \n Test zostanie uniewa≈ºniony!", "Wychodzƒô", "Zostaje!", ReturnToMenu, true);
         }
     }
 
@@ -406,12 +410,14 @@ public class TestManager : MonoBehaviour
 
     public void StartTest(string sTestType)
     {
-        INF2Btn.SetActive(false);
-        INF3Btn.SetActive(false);
-        INF4Btn.SetActive(false);
-
         if (FirebaseManager.IsUserLoggedIn() || DEBUG_MODE)
         {
+            INF2Btn.SetActive(false);
+            INF3Btn.SetActive(false);
+            INF4Btn.SetActive(false);            
+            INF2Btn1Q.SetActive(false);
+            INF3Btn1Q.SetActive(false);
+            INF4Btn1Q.SetActive(false);
 
             string sTestType_uid;
 
@@ -453,11 +459,76 @@ public class TestManager : MonoBehaviour
 
             INF2Btn.SetActive(true);
             INF3Btn.SetActive(true);
-            INF4Btn.SetActive(true);
+            INF4Btn.SetActive(true);            
+            INF2Btn1Q.SetActive(true);
+            INF3Btn1Q.SetActive(true);
+            INF4Btn1Q.SetActive(true);
         }
         else
         {
-            PopUpManager.instance.CreateErrorPopup("ERROR", "Nie jesteú zalogowany! Tylko zalogowani uøytkownicy majπ dostÍp do testÛw!");
+            PopUpManager.instance.CreateErrorPopup("ERROR", "Nie jeste≈õ zalogowany! Tylko zalogowani u≈ºytkownicy majƒÖ dostƒôp do test√≥w!");
+        }
+    }
+
+    public void StartTestOneQ(string sTestType)
+    {
+        if (FirebaseManager.IsUserLoggedIn() || DEBUG_MODE)
+        {
+            INF2Btn.SetActive(false);
+            INF3Btn.SetActive(false);
+            INF4Btn.SetActive(false);
+            INF2Btn1Q.SetActive(false);
+            INF3Btn1Q.SetActive(false);
+            INF4Btn1Q.SetActive(false);
+
+            string sTestType_uid;
+
+            switch (sTestType)
+            {
+                case "INF.02":
+                    sTestType_uid = sInf2_uid;
+                    break;
+                case "INF.03":
+                    sTestType_uid = sInf3_uid;
+                    break;
+                case "INF.04":
+                    sTestType_uid = sInf4_uid;
+                    break;
+                default:
+                    sTestType_uid = "";
+                    break;
+            }
+
+            if (sTestType_uid == "")
+                return;
+
+            string json = "{ \"testType\": \"" + sTestType_uid + "\" }";
+
+            StartCoroutine(APIManager.instance.PostRequestWithRetry(APIManager.START_SINGLE_QUESTION_URL, json, result =>
+            {
+                if (result == null)
+                    return;
+
+                if (GenerateQuestions(result))
+                {
+                    MainMenuCanvas.SetActive(false);
+                    QuestionCanvas.SetActive(true);
+
+                    DisplayQuestion(iCurrentQuestion);
+                }
+
+            }));
+
+            INF2Btn.SetActive(true);
+            INF3Btn.SetActive(true);
+            INF4Btn.SetActive(true);
+            INF2Btn1Q.SetActive(true);
+            INF3Btn1Q.SetActive(true);
+            INF4Btn1Q.SetActive(true);
+        }
+        else
+        {
+            PopUpManager.instance.CreateErrorPopup("ERROR", "Nie jeste≈õ zalogowany! Tylko zalogowani u≈ºytkownicy majƒÖ dostƒôp do test√≥w!");
         }
     }
 }

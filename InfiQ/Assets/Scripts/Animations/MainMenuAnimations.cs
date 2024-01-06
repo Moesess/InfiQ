@@ -9,6 +9,8 @@ public class MainMenuAnimations : MonoBehaviour
     [SerializeField] GameObject TestButton1;
     [SerializeField] GameObject TestButton2;
     [SerializeField] GameObject TestButton3;
+    [SerializeField] GameObject TestButtonsText;
+    [SerializeField] GameObject TestButtons;
     [SerializeField] GameObject BottomButtons;
 
     // Start is called before the first frame update
@@ -18,6 +20,8 @@ public class MainMenuAnimations : MonoBehaviour
         TestButton2.GetComponent<CanvasGroup>().alpha = 0;
         TestButton3.GetComponent<CanvasGroup>().alpha = 0;
         TopMenu.GetComponent<CanvasGroup>().alpha = 0;
+        TestButtonsText.GetComponent<CanvasGroup>().alpha = 0;
+        TestButtons.GetComponent<CanvasGroup>().alpha = 0;
         BottomButtons.GetComponent<CanvasGroup>().alpha = 0;
         
         StartCoroutine(DelayedStart());
@@ -39,6 +43,14 @@ public class MainMenuAnimations : MonoBehaviour
         yield return new WaitForSeconds(.1f);
         LeanTween.alphaCanvas(TestButton3.GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeOutSine).setIgnoreTimeScale(true);
         SlideInFromLeft(TestButton3);
+
+        yield return new WaitForSeconds(.1f);
+        LeanTween.alphaCanvas(TestButtonsText.GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeOutSine).setIgnoreTimeScale(true);
+        SlideInFromLeft(TestButtonsText);
+
+        yield return new WaitForSeconds(.1f);
+        LeanTween.alphaCanvas(TestButtons.GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeOutSine).setIgnoreTimeScale(true);
+        SlideInFromLeft(TestButtons);
 
         yield return new WaitForSeconds(.1f);
         LeanTween.alphaCanvas(BottomButtons.GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeOutSine).setIgnoreTimeScale(true);

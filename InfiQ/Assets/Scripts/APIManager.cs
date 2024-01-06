@@ -20,6 +20,9 @@ public class APIManager : MonoBehaviour
     public const string VALIDATE_SINGLE_QUESTION_URL = URL + "/Tests/random_question_answer/";
     public const string START_TEST_URL = URL + "/Tests/random_40_question/";
     public const string VALIDATE_TEST_URL = URL + "/Tests/test_validate/";
+    public const string USERS_URL = URL + "/Users/";
+    public const string HIGH_SCORES_URL = USERS_URL + "top_scores/?test_type=";
+    public const string USER_HIGH_SCORES_URL = USERS_URL + "top_user_scores/?test_type=";
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -43,8 +46,9 @@ public class APIManager : MonoBehaviour
             {
                 www.SetRequestHeader("Authorization", "Bearer " + AuthToken);
             }
-
+            PopUpManager.instance.ShowLoadingPopUp();
             yield return www.SendWebRequest();
+            PopUpManager.instance.CloseLoadingPopUp();
 
             if (www.result == UnityWebRequest.Result.Success)
             {
@@ -69,8 +73,9 @@ public class APIManager : MonoBehaviour
         {
             request.SetRequestHeader("Authorization", "Bearer " + AuthToken);
         }
-
+        PopUpManager.instance.ShowLoadingPopUp();
         yield return request.SendWebRequest();
+        PopUpManager.instance.CloseLoadingPopUp();
 
         if (request.result == UnityWebRequest.Result.Success)
         {
@@ -98,8 +103,9 @@ public class APIManager : MonoBehaviour
             {
                 request.SetRequestHeader("Authorization", "Bearer " + APIManager.instance.AuthToken);
             }
-
+            PopUpManager.instance.ShowLoadingPopUp();
             yield return request.SendWebRequest();
+            PopUpManager.instance.CloseLoadingPopUp();
 
             if (request.result == UnityWebRequest.Result.Success)
             {
