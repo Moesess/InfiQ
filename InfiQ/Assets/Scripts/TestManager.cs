@@ -297,14 +297,14 @@ public class TestManager : MonoBehaviour
         {
             if (result == null)
                 return;
-            PopUpManager.instance.ShowQuestionnairePopUp();
             PopUpManager.instance.PrepFinishPopup(result, Questions, AnswersUIDS);
         }));
     }
 
     public void ReturnToMenu(bool bQuit)
     {
-        if(bQuit)
+        PopUpManager.instance.ShowQuestionnairePopUp();
+        if (bQuit)
         {
             MainMenuCanvas.SetActive(true);
             QuestionCanvas.SetActive(false);

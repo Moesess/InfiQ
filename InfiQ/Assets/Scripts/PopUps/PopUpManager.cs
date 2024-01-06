@@ -150,23 +150,10 @@ public class PopUpManager : MonoBehaviour
     }
     public void ShowQuestionnairePopUp()
     {
-        FirebaseManager.instance.GetUserUID( x => StartCoroutine(APIManager.instance.GetRequest(APIManager.USERS_URL + x,
-        result =>
+        if (PlayerPrefs.GetInt("NUMBEROFFILLEDTESTS", 0) >= 3 && PlayerPrefs.GetInt("WASQUESTIONNAIREFILLED", 0) == 0)
         {
-            if (result == null)
-                return;
-
-            User response = JsonUtility.FromJson<User>(result);
-            if(response.number_of_tests > 4 && PlayerPrefs.GetInt("WASQUESTIONNAIREFILLED", 0) == 0)
-            {
-                ShowPopUp(PopUps[8], false);
-            }
-        })));
-    }
-    public void ShowQuestionnaire()
-    {
-        Application.OpenURL("https://forms.gle/me4LVnaULopgFM8b8");
-        PlayerPrefs.SetInt("WASQUESTIONNAIREFILLED", 1);
+            ShowPopUp(PopUps[8], false);
+        }
     }
     public void ShowLoadingPopUp()
     {

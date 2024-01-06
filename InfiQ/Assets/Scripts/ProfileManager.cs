@@ -72,7 +72,7 @@ public class ProfileManager : MonoBehaviour
         completedTests.text = response.number_of_tests.ToString();
         allAnswers.text = response.all_answers.ToString();
         correctAnswers.text = response.correct_answers.ToString();
-        accuracy.text = string.Format("{0:0.00}", response.accuracy) + "%";
+        accuracy.text = string.Format("{0:0.00}", response.accuracy * 100) + "%";
 
         PopUpManager.instance.CloseLoadingPopUp();
     }

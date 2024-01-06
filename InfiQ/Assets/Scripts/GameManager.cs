@@ -19,12 +19,16 @@ public class GameManager : MonoBehaviour
             
             PlayerPrefs.SetInt("FIRSTTIMEOPENING", 0);
             PlayerPrefs.SetInt("WASQUESTIONNAIREFILLED", 0);
+            PlayerPrefs.SetInt("NUMBEROFFILLEDTESTS", 0);
 
         }
         else
         {
             Debug.Log("NOT First Time Opening");
-
+            if(!PlayerPrefs.HasKey("NUMBEROFFILLEDTESTS"))
+            {
+                PlayerPrefs.SetInt("NUMBEROFFILLEDTESTS", 0);
+            }
             //Do your stuff here
         }
     }
