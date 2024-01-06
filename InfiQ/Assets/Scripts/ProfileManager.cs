@@ -1,6 +1,4 @@
-using Firebase.Auth;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -34,7 +32,6 @@ public class ProfileManager : MonoBehaviour
 
     public void Start()
     {
-        PopUpManager.instance.ShowLoadingPopUp();
         ProfileButtonClick();
     }
 
@@ -65,7 +62,9 @@ public class ProfileManager : MonoBehaviour
         yield return APIManager.instance.GetRequest(APIManager.USERS_URL + uid, res => { result = res; });
 
         if (result == null)
+        {
             yield break;
+        }
 
         User response = JsonUtility.FromJson<User>(result);
         nickName.text = response.name;
@@ -73,15 +72,17 @@ public class ProfileManager : MonoBehaviour
         allAnswers.text = response.all_answers.ToString();
         correctAnswers.text = response.correct_answers.ToString();
         accuracy.text = string.Format("{0:0.00}", response.accuracy * 100) + "%";
-
-        PopUpManager.instance.CloseLoadingPopUp();
     }
 
     public void ProfileButtonClick()
     {
+        PopUpManager.instance.ShowLoadingPopUp();
+
         if (!FirebaseManager.IsUserLoggedIn())
             FirebaseManager.instance.SignInWithGoogle( () => { PopulateUserProfile(); });
         else
             PopulateUserProfile();
+
+        PopUpManager.instance.CloseLoadingPopUp();
     }
 }

@@ -86,7 +86,7 @@ public class TestValidateData
 public class TestManager : MonoBehaviour
 {
     // TODO ONLY FOR DEBUG
-    private const bool DEBUG_MODE = true;
+    private const bool DEBUG_MODE = false;
 
     public static TestManager Instance;
 
@@ -243,8 +243,9 @@ public class TestManager : MonoBehaviour
         else 
         {
             ShowImageButton.SetActive(false);
-            QuestionImage.enabled = false;
         }
+
+        QuestionImage.enabled = false;
     }
 
     public IEnumerator ScaleUp(GameObject objToSlide)
@@ -299,6 +300,9 @@ public class TestManager : MonoBehaviour
                 return;
             PopUpManager.instance.PrepFinishPopup(result, Questions, AnswersUIDS);
         }));
+
+        int nTests = PlayerPrefs.GetInt("NUMBEROFFILLEDTESTS");
+        PlayerPrefs.SetInt("NUMBEROFFILLEDTESTS", nTests+1);
     }
 
     public void ReturnToMenu(bool bQuit)

@@ -127,11 +127,15 @@ public class FirebaseManager : MonoBehaviour
                 if (task.IsCanceled)
                 {
                     Debug.LogError("Sign-in canceled.");
+                    GoogleSignIn.DefaultInstance.SignOut();
+                    PopUpManager.instance.CreateErrorPopup("Anulowano", "Anulowano logowanie Google");
                 }
                 else if (task.IsFaulted)
                 {
                     Debug.LogError("Sign-in encountered an error.");
                     Debug.LogError(task.Exception);
+                    GoogleSignIn.DefaultInstance.SignOut();
+                    PopUpManager.instance.CreateErrorPopup("Error", "Wyst¹pi³ b³¹d z logowaniem");
                 }
                 else
                 {
